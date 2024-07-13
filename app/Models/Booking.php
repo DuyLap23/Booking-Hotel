@@ -15,6 +15,15 @@ class Booking extends Model
         'check_out_date',
         'booking_date',
         'total_amount',
-        'status'
+    
     ];
+    public function room()
+    {
+        return $this->belongsTo(Room::class);
+    }
+
+    public function customer()
+    {
+        return $this->belongsTo(Customer::class);
+    }
 }

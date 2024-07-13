@@ -9,13 +9,17 @@ class Staff extends Model
 {
     use HasFactory;
     protected $fillable = [
-        'hotel_id',
         'first_name',
         'last_name',
         'email',
         'phone',
         'role',
         'password',
-        'hire_date'
+        'hire_date',
+        'is_active'
     ];
+    public function bookings()
+    {
+        return $this->hasMany(Booking::class);
+    }
 }

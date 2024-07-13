@@ -17,16 +17,78 @@
 
             </ul>
         </li>
-        <li class>
+        {{-- <li class>
             <a class="has-arrow" aria-expanded="false">
                 <div class="icon_menu">
-                    <img src="{{ asset('themes/admin/img/menu-icon/2.svg') }}" alt>
+                    <img src="{{ asset('themes/admin/img/menu-icon/14.svg') }}" alt>
                 </div>
                 <span>Hotels</span>
             </a>
             <ul>
                 <li><a href="{{ route('admin.hotels.index') }}">List Hotels</a></li>
                 <li><a href="{{ route('admin.hotels.create') }}">Add Hotels</a></li>
+
+            </ul>
+        </li> --}}
+        <li class>
+            <a class="has-arrow" aria-expanded="false">
+                <div class="icon_menu">
+                    <img src="{{ asset('themes/admin/img/menu-icon/15.svg') }}" alt>
+                </div>
+                <span>Rooms</span>
+            </a>
+            <ul>
+                <li> <a class="has-arrow" aria-expanded="false">
+                        <div class="icon_menu">
+                            <img src="{{ asset('themes/admin/img/menu-icon/15.svg') }}" alt>
+                        </div>
+                        <span>Room Type</span>
+                    </a>
+                    <ul>
+                        <li><a href="{{ route('admin.room_types.index') }}">Room Type</a></li>
+                        <li><a href="{{ route('admin.room_types.create') }}">Add Room Type</a></li>
+
+                    </ul>
+                </li>
+                <li>
+                    <a class="has-arrow" aria-expanded="false">
+                        <div class="icon_menu">
+                            <img src="{{ asset('themes/admin/img/menu-icon/16.svg') }}" alt>
+                        </div>
+                        <span>Rooms</span>
+                    </a>
+                    <ul>
+                        <li><a href="{{ route('admin.rooms.index') }}">Room</a></li>
+                        <li><a href="{{ route('admin.rooms.create') }}">Add Room</a></li>
+
+                    </ul>
+                </li>
+            </ul>
+        </li>
+
+        <li class>
+            <a class="has-arrow" aria-expanded="false">
+                <div class="icon_menu">
+                    <img src="{{ asset('themes/admin/img/menu-icon/13.svg') }}" alt>
+                </div>
+                <span>Promotions</span>
+            </a>
+            <ul>
+                <li><a href="{{ route('admin.promotions.index') }}">Promotion</a></li>
+                <li><a href="{{ route('admin.promotions.create') }}">Add Promotion</a></li>
+
+            </ul>
+        </li>
+        <li class>
+            <a class="has-arrow" aria-expanded="false">
+                <div class="icon_menu">
+                    <img src="{{ asset('themes/admin/img/menu-icon/9.svg') }}" alt>
+                </div>
+                <span>Bookings</span>
+            </a>
+            <ul>
+                <li><a href="{{ route('admin.bookings.index') }}">Booking</a></li>
+                <li><a href="{{ route('admin.bookings.create') }}">Add Booking</a></li>
 
             </ul>
         </li>

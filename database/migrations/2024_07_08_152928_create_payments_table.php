@@ -17,8 +17,8 @@ return new class extends Migration
             $table->foreignIdFor(Booking::class)->constrained();
             $table->date('payment_date');
             $table->decimal('amount');
-            $table->date('payment_method');
-            $table->string('status');
+            $table->string('payment_method');
+            $table->boolean('status')->default(false);
             $table->timestamps();
         });
     }

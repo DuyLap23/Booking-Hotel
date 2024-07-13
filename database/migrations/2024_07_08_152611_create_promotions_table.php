@@ -15,11 +15,11 @@ return new class extends Migration
         // khuyen mai
         Schema::create('promotions', function (Blueprint $table) {
             $table->id();
-            $table->foreignIdFor(Hotel::class)->constrained();
+            $table->string('title');
             $table->string('description')->nullable();
             $table->double('discount_percentage')->comment('Tir lệ giảm giá');
-            $table->date('start_date');
-            $table->date('end_date');
+            $table->dateTime('start_date');
+            $table->dateTime('end_date');
             $table->timestamps();
         });
     }

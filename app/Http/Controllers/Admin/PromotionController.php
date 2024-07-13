@@ -4,22 +4,23 @@ namespace App\Http\Controllers\Admin;
 
 use App\Http\Controllers\Controller;
 use App\Models\Hotel;
+use App\Models\Promotion;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Storage;
-use Illuminate\Support\Str;
 
-class HotelController extends Controller
+class PromotionController extends Controller
 {
     /**
      * Display a listing of the resource.
      */
-    const PATH_VIEW = 'admin.hotels.';
-    const PATH_UPLOAD = 'hotels';
+    const PATH_VIEW = 'admin.promotions.';
+    const PATH_UPLOAD = 'promotions';
     public function index()
     {
-        $data = Hotel::query()->paginate(10);
-        return view(self::PATH_VIEW . __FUNCTION__, compact('data'));
+        $promotions = Promotion::query()->get();
+
+        return view(self::PATH_VIEW . __FUNCTION__, compact('promotions'));
     }
 
     /**
@@ -37,19 +38,13 @@ class HotelController extends Controller
     {
         try {
             DB::beginTransaction();
-            $data = $request->except(['image_thumbnail']);
-            $data['is_active'] ??= 0;
+            $data = $request->all();
 
-            if ($request->hasFile('image_thumbnail')) {
-                $data['image_thumbnail'] = Storage::put(self::PATH_UPLOAD, $request->file('image_thumbnail'));
-            }
-           
-            $data['slug'] = str::slug($data['name']) . '-' . $data['sku'];
-            Hotel::query()->create($data);
+            Promotion::query()->create($data);
 
             DB::commit();
 
-            return redirect()->route('admin.hotels.index')->with('success', 'Thêm thành công ');
+            return redirect()->route('admin.promotions.index')->with('success', 'Thêm thành công ');
         } catch (\Exception $exception) {
             dd($exception->getMessage());
             return back();
@@ -69,7 +64,7 @@ class HotelController extends Controller
      */
     public function edit(string $id)
     {
-        $data = Hotel::query()->findOrFail($id);
+        $data = Promotion::query()->findOrFail($id);
         return view(self::PATH_VIEW . __FUNCTION__, compact('data'));
     }
 
@@ -80,31 +75,17 @@ class HotelController extends Controller
     {
         try {
             DB::beginTransaction();
-            $model = Hotel::query()->findOrFail($id);
+            $model = Promotion::query()->findOrFail($id);
 
-            $data = $request->except('image_thumbnail');
+            $data = $request->all();
             $data['is_active'] ??= 0;
-    
-            if ($request->hasFile('image_thumbnail')) {
-                $data['image_thumbnail'] = Storage::put(self::PATH_UPLOAD, $request->file('image_thumbnail'));
-            }
-          
-    
-            $currentImage = $model->image_thumbnail;
-    
+
             $model->update($data);
-    
-            if ($currentImage && Storage::exists($currentImage)) {
-                Storage::delete($currentImage);
-            }
-            
 
             DB::commit();
-    
-            return redirect()->route('admin.hotels.index')->with('success', 'Cập nhật thành công');
 
-        }catch (\Exception $exception) {    
-
+            return redirect()->route('admin.promotions.index')->with('success', 'Cập nhật thành công');
+        } catch (\Exception $exception) {
             dd($exception->getMessage());
 
             return back()->with('error', 'Cập nhật thất bại');
@@ -116,13 +97,9 @@ class HotelController extends Controller
      */
     public function destroy(string $id)
     {
-        $model = Hotel::query()->findOrFail($id);
-        
+        $model = Promotion::query()->findOrFail($id);
+
         $model->delete();
-        
-        if ($model->image_thumbnail && Storage::exists($model->image_thumbnail)) {
-            Storage::delete($model->image_thumbnail);
-        }
 
         return back()->with('success', 'Xoá thành công');
     }

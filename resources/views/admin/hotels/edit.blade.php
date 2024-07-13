@@ -16,7 +16,7 @@
                         <div class="white_card_body">
                             <div class="QA_section">
                                 <div class="white_box_tittle list_header">
-                                    <h4>Hotels add</h4>
+                                    <h4>Hotels Update</h4>
 
                                 </div>
                                 <div class="QA_table mb_30">
@@ -25,9 +25,10 @@
                                         <div class="white_card card_height_100 mb_30">
                                             <div class="white_card_body">
                                                 <div class="card-body">
-                                                    <form action="{{ route('admin.hotels.update', $data->id) }}"
+                                                    <form action="{{ route('admin.hotels.update', $data->id)     }}"
                                                         method="POST" enctype="multipart/form-data">
                                                         @csrf
+                                                        @method('PUT')
                                                         <div class="row mb-3">
                                                             <div class="col-md-6 mt-2">
                                                                 <label class="form-label" for="inputName4">Name</label>

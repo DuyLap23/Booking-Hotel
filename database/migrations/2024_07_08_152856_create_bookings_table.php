@@ -1,9 +1,10 @@
-<?php
+    <?php
 
 use App\Models\Customer;
 use App\Models\Room;
 use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
+use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Schema;
 
 return new class extends Migration
@@ -17,11 +18,11 @@ return new class extends Migration
             $table->id();
             $table->foreignIdFor(Customer::class)->constrained();
             $table->foreignIdFor(Room::class)->constrained();
-            $table->date('check_in_date');
-            $table->date('check_out_date');
-            $table->date('booking_date');
+            $table->dateTime('check_in_date');
+            $table->dateTime('check_out_date');
+            $table->dateTime('booking_date')->default(DB::raw('CURRENT_TIMESTAMP'));
             $table->decimal('total_amount');
-            $table->string('status');
+           
             $table->timestamps();
         });
     }

@@ -5,13 +5,13 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 
-class Marketing_Banner extends Model
+class MarketingBanner extends Model
 {
     use HasFactory;
     protected $fillable = [
-        'hotel_id',
+        'title',
         'image_url',
-        'link',
+        'url',
         'description',
         'start_date',
         'end_date',

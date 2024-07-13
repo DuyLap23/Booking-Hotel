@@ -9,10 +9,11 @@ class Promotion extends Model
 {
     use HasFactory;
     protected $fillable = [
-        'hotel_id', 
+         'title',
         'description',
         'discount_percentage', 
         'start_date', 
         'end_date'
     ];
+ 
 }

@@ -1,7 +1,6 @@
 <?php
 
-use App\Models\Promotion;
-use App\Models\Room_Type;
+use App\Models\Hotel;
 use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
@@ -13,10 +12,14 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::create('room__type__promotions', function (Blueprint $table) {
+        Schema::create('marketing_banners', function (Blueprint $table) {
             $table->id();
-            $table->foreignIdFor(Room_Type::class)->constrained();
-            $table->foreignIdFor(Promotion::class)->constrained();
+            $table->string('title');
+            $table->string('image_url');
+            $table->string('url');
+            $table->string('description');
+            $table->dateTime('start_date');
+            $table->dateTime('end_date');
             $table->timestamps();
         });
     }
@@ -26,6 +29,6 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::dropIfExists('room__type__promotions');
+        Schema::dropIfExists('marketing__banners');
     }
 };
