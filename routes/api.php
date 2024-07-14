@@ -2,7 +2,7 @@
 
 use App\Http\Controllers\API\PromotionController;
 use App\Http\Controllers\API\RoomController;
-use Illuminate\Http\Request;
+use App\Http\Controllers\API\UserController;
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -16,9 +16,18 @@ use Illuminate\Support\Facades\Route;
 |
 */
 
-Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
-    return $request->user();
+// Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
+//     return $request->user();
+// });
+Route::post('register', [UserController::class, 'register']);
+Route::post('login', [UserController::class, 'login']);
+Route::group([
+    'middleware' => ['auth:sanctum']
+],function(){
+    // profile
+    Route::get('profile', [UserController::class, 'profile']);
+    // logout
+    Route::get('logout', [UserController::class, 'logout']);
 });
-
 Route::apiResource('rooms', RoomController::class);
 Route::apiResource('promotions', PromotionController::class);
