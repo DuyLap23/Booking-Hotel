@@ -1,15 +1,16 @@
 {
     "version": 2,
+    "name": "booking-hotel",
     "builds": [
       {
-        "src": "public/index.php",
-        "use": "vercel-php/laravel"
+        "src": "api/index.php",
+        "use": "@vercel/php"
       }
     ],
     "routes": [
       {
         "src": "/(.*)",
-        "dest": "public/index.php"
+        "dest": "/api/index.php"
       }
     ]
   }
