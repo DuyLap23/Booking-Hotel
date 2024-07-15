@@ -22,7 +22,7 @@ use Illuminate\Support\Facades\Route;
 Route::post('register', [UserController::class, 'register']);
 Route::post('login', [UserController::class, 'login']);
 Route::group([
-    'middleware' => ['auth:sanctum']
+    'middleware' => 'auth:sanctum'
 ],function(){
     // profile
     Route::get('profile', [UserController::class, 'profile']);

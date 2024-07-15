@@ -111,16 +111,20 @@ class UserController extends Controller
             200,
         );
     }
-    public function logout (){
-        auth()->user()->tokens()->delete();
-        return response()->json(
-            [
+    public function logout (Request $request){
+        $user = $request->user();
+        if ($user) {
+            $user->tokens()->delete();
+
+            return response()->json([
                 'status' => true,
                 'message' => 'Logout successfully',
-                'data' => [],
-               
-            ],
-            200,
-        );
+            ], 200);
+        }
+
+        return response()->json([
+            'status' => false,
+            'message' => 'User not authenticated',
+        ], 401);
     }
 }
