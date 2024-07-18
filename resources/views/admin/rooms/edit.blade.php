@@ -35,12 +35,18 @@
                                                                 <input type="text" class="form-control" id="inputName"
                                                                     name="name" value="{{ $data->name }}"
                                                                     placeholder="P302, F101...">
+                                                                    @error('name')
+                                                                    <span class="text-danger">{{ $message }}</span>
+                                                                @enderror
                                                             </div>
 
                                                             <div class="col-md-4 mt-2">
                                                                 <label class="form-label" for="image">Image </label>
                                                                 <input type="file" class="form-control" id="image"
                                                                     name="image">
+                                                                    @error('image')
+                                                                    <span class="text-danger">{{ $message }}</span>
+                                                                @enderror
                                                                 @php
                                                                     $url = $data->image;
 
@@ -51,11 +57,41 @@
                                                                 <img src="{{ $url }}" width="100"
                                                                     class="mt-3">
                                                             </div>
+                                                            <div class="row">
+                                                                <div class="col-lg-12 mt-5">
+                                                                    <div class="">
+                                                                        <div class="live-preview">
+                                                                            <button type="button" class="btn btn-success btn-sm float-end" onclick="addImageGallery()">Thêm ảnh</button>
+                                                                            <div class="row gy-4" id="gallery_list">
+                                                                                @foreach ($data->images as $images)
+                                                                                <div class="col-md-4" id="{{ $images->id }}">
+                                                                                    <label for="{{ $images->id }}" class="form-label">Image</label>
+                                                                                    <div class="d-flex">
+                                                                                        <input type="file" class="form-control" name="room_images[]" id="{{ $images->id }}">
+                                                                                        <button type="button" class="btn btn-danger" onclick="removeImageGallery('{{ $images->id }}')">
+                                                                                            <span class="bx bx-trash"></span>
+                                                                                        </button>
+                                                                                   
+
+                                                                                    </div>
+                                                                                    <img class="mt-3" src="{{ Storage::url($images->image) }}" alt="" width="70">
+                                                                                </div>
+                                                                                @endforeach
+                                                                            </div>
+                                                                        </div>
+                                                                        <!--end row-->
+                                                                    </div>
+                                                                </div><!--end col-->
+                                                            </div>
+                                                            
                                                             <div class="col-md-3 mt-2">
                                                                 <label class="form-label"
                                                                     for="inputDescription">Description</label>
                                                                 <textarea name="description" id="inputDescription" cols="130" rows="5"
-                                                                    value=""placeholder="">{{ $data->description }}</textarea>
+                                                                   >{{ $data->description }}{{ old('description') }}</textarea>
+                                                                    @error('description')
+                                                                    <span class="text-danger">{{ $message }}</span>
+                                                                @enderror
                                                             </div>
                                                         </div>
                 
@@ -71,6 +107,9 @@
                                                                     </option>
                                                                 @endforeach
                                                             </select>
+                                                            @error('room_type_id')
+                                                            <span class="text-danger">{{ $message }}</span>
+                                                        @enderror
                                                         </div>
 
                                                         <div>
@@ -111,4 +150,41 @@
     </div>
 
     </div>
+@endsection
+@section('script-libs')
+    <script>
+      function addImageGallery() {
+    // Tạo một ID duy nhất cho mỗi mục thư viện ảnh mới
+    let id = 'gen_' + Math.random().toString(36).substring(2, 15).toLowerCase();
+    
+    // Tạo HTML động cho mục thư viện ảnh mới
+    let html = `
+        <div class="col-md-4" id="${id}_item">
+            <label for="${id}" class="form-label">Image</label>
+            <div class="d-flex">
+                <input type="file" class="form-control" name="room_images[]" id="${id}">
+                <button type="button" class="btn btn-danger" onclick="removeImageGallery('${id}_item')">
+                    <span class="bx bx-trash"></span>
+                </button>
+            </div>
+        </div>
+    `;
+
+    // Thêm HTML vào phần tử có ID 'gallery_list'
+    document.getElementById('gallery_list').insertAdjacentHTML('beforeend', html);
+}
+
+function removeImageGallery(id) {
+    // Hiển thị hộp thoại xác nhận trước khi xóa
+    if (confirm('Chắc chắn xóa không?')) {
+        // Xóa phần tử có ID được truyền vào khỏi DOM
+        let element = document.getElementById(id);
+        if (element) {
+            element.remove();
+        }
+    }
+}
+
+
+    </script>
 @endsection

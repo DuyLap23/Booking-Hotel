@@ -38,19 +38,24 @@ class RoomTypeController extends Controller
      */
     public function store(Request $request)
     {
+        $validated = $request->validate([
+                
+            'name' => ['required','max:50'],
+            'price' => ['required','integer'],
+            'description' => ['required', 'min:20'],
+
+        ]); 
         try {
-            DB::beginTransaction();
-            $data = $request->all();
-            $data['is_active'] ??= 0;
+          
+            $data = $validated;
+            $data['is_active'] = $request->boolean('is_active', false);
 
             RoomType::query()->create($data);
 
-            DB::commit();
-
             return redirect()->route('admin.room_types.index')->with('success', 'Thêm thành công ');
         } catch (\Exception $exception) {
-            dd($exception->getMessage());
-            return back();
+          DB::rollBack();
+            return back()->with('error',$exception->getMessage());
         }
     }
 
@@ -78,12 +83,19 @@ class RoomTypeController extends Controller
      */
     public function update(Request $request, string $id)
     {
+        $validated = $request->validate([
+                
+            'name' => ['required','max:50'],
+            'price' => ['required','integer'],
+            'description' => ['required', 'min:20'],
+
+        ]); 
         try {
             DB::beginTransaction();
             $model = RoomType::query()->findOrFail($id);
 
-            $data = $request->all();
-            $data['is_active'] ??= 0;
+            $data = $validated;
+            $data['is_active'] = $request->boolean('is_active', false);
     
             $model->update($data);
 
@@ -93,10 +105,9 @@ class RoomTypeController extends Controller
             return redirect()->route('admin.room_types.index')->with('success', 'Cập nhật thành công');
 
         }catch (\Exception $exception) {    
-
-            dd($exception->getMessage());
-
-            return back()->with('error', 'Cập nhật thất bại');
+            
+        DB::rollBack();
+            return back()->with('error',$exception->getMessage());
         }
     }
 

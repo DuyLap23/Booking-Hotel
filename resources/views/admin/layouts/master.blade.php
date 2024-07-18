@@ -42,6 +42,8 @@
     
     <link rel="stylesheet" href="{{ asset('themes/admin/css/style1.css') }}" />
     <link rel="stylesheet" href="{{ asset('themes/admin/css/colors/default.css') }}" id="colorSkinCSS')}}">
+    <link href='https://unpkg.com/boxicons@2.1.4/css/boxicons.min.css' rel='stylesheet'>
+
     @yield('style-libs')
 </head>
 

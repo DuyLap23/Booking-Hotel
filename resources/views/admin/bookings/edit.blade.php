@@ -25,9 +25,10 @@
                                         <div class="white_card card_height_100 mb_30">
                                             <div class="white_card_body">
                                                 <div class="card-body">
-                                                    <form action="{{ route('admin.bookings.store') }}" method="POST"
+                                                    <form action="{{ route('admin.bookings.update', $bookings->id) }}" method="POST"
                                                         enctype="multipart/form-data">
-                                                        @csrf   
+                                                        @csrf
+                                                        @method('put')
                                                         <div class="row mb-3">
                                                            
                                                             <div class="col-md-6 mt-2">
@@ -35,12 +36,18 @@
                                                                 <input type="datetime-local" class="form-control" id="checkindate"
                                                                     name="check_in_date" value="{{ $bookings->check_in_date }}"
                                                                     placeholder="P302, F101...">
+                                                                    @error('check_in_date')
+                                                                    <span class="text-danger">{{ $message }}</span>
+                                                                @enderror
                                                             </div>
                                                             <div class="col-md-6 mt-2">
                                                                 <label class="form-label" for="checkoutdate">Check Out Date</label>
                                                                 <input type="datetime-local" class="form-control" id="checkoutdate"
                                                                     name="check_out_date" value="{{ $bookings->check_out_date }}"
                                                                     placeholder="P302, F101...">
+                                                                    @error('check_out_date')
+                                                                    <span class="text-danger">{{ $message }}</span>
+                                                                @enderror
                                                             </div>
 
                                                         </div>
@@ -49,8 +56,11 @@
                                                             <div class="col-md-6 mt-2">
                                                                 <label class="form-label" for="totalamount">Total Price</label>
                                                                 <input type="number" class="form-control" id="totalamount"
-                                                                    name="total_amount" value="{{ $bookings->totak_amount }}"
+                                                                    name="total_amount" value="{{ $bookings->total_amount }}"
                                                                     placeholder="Enter total">
+                                                                    @error('total_amount')
+                                                                    <span class="text-danger">{{ $message }}</span>
+                                                                @enderror
                                                             </div>
 
                                                         </div>
@@ -65,9 +75,12 @@
                                                                     </option>
                                                                 @endforeach
                                                             </select>
+                                                            @error('room_id')
+                                                            <span class="text-danger">{{ $message }}</span>
+                                                        @enderror
                                                         </div>
-                                                        <div class="col-mb-3">
-                                                            <label class="form-label" for="inputRoomType">Customer</label>
+                                                        <div class="col-mb-3 mt-3 ">
+                                                            <label class="form-label " for="inputRoomType">Customer</label>
                                                             <select id="inputRoomType" class="form-control" name="customer_id"    >
                                                                 <option selected>Choose...</option>
                                                                 @foreach ($customers as $customer)
@@ -76,10 +89,13 @@
                                                                     </option>
                                                                 @endforeach
                                                             </select>
+                                                            @error('customer_id')
+                                                            <span class="text-danger">{{ $message }}</span>
+                                                        @enderror
                                                         </div>
 
                                                  
-                                                        <button type="submit" class="btn btn-primary">Submit</button>
+                                                        <button type="submit" class="btn btn-primary mt-3">Submit</button>
                                                     </form>
                                                 </div>
                                             </div>

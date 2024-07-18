@@ -36,9 +36,16 @@ class PromotionController extends Controller
      */
     public function store(Request $request)
     {
+        $validated = $request->validate([
+            'title' => ['required', 'max:30'],
+            'discount_percentage' => ['required', 'integer', 'between:0,100'],
+            'start_date' => ['required', 'date'],
+            'end_date' => ['required', 'date', 'after_or_equal:start_date'],
+            'description' => ['required', 'min:20'],
+        ]);
         try {
             DB::beginTransaction();
-            $data = $request->all();
+            $data = $validated;
 
             Promotion::query()->create($data);
 
@@ -73,12 +80,18 @@ class PromotionController extends Controller
      */
     public function update(Request $request, string $id)
     {
+        $validated = $request->validate([
+            'title' => ['required', 'max:30'],
+            'discount_percentage' => ['required', 'integer', 'between:0,100'],
+            'start_date' => ['required', 'date'],
+            'end_date' => ['required', 'date', 'after_or_equal:start_date'],
+            'description' => ['required', 'min:20'],
+        ]);
         try {
             DB::beginTransaction();
             $model = Promotion::query()->findOrFail($id);
 
-            $data = $request->all();
-            $data['is_active'] ??= 0;
+            $data = $validated;
 
             $model->update($data);
 
@@ -86,9 +99,10 @@ class PromotionController extends Controller
 
             return redirect()->route('admin.promotions.index')->with('success', 'Cập nhật thành công');
         } catch (\Exception $exception) {
-            dd($exception->getMessage());
 
-            return back()->with('error', 'Cập nhật thất bại');
+            DB::rollBack();
+            
+            return back()->with('error', $exception->getMessage());
         }
     }
 

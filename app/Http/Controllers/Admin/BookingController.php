@@ -10,6 +10,7 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Facades\Storage;
+use Illuminate\Support\Facades\Validator;
 
 class BookingController extends Controller
 {
@@ -32,6 +33,7 @@ class BookingController extends Controller
      */
     public function create()
     {
+        
         $rooms = Room::where(['is_active' => 1, 'availability_status' => 1])->get();
         $customers = Customer::all();
         return view(self::PATH_VIEW . __FUNCTION__, compact('rooms', 'customers'));
@@ -42,9 +44,21 @@ class BookingController extends Controller
      */
     public function store(Request $request)
     {
-        try {
+        $validated = $request->validate([
+                
+            'check_in_date' => ['required','date'],
+            'check_out_date' => ['required','date','after_or_equal:check_in_date'],
+            'room_id' => ['required','exists:rooms,id'],
+            'customer_id' => ['required','exists:customers,id'],
+            'total_amount' => 'integer|required',
+            
+
+        ]);
+        try{
+           
             DB::beginTransaction();
-            $data = $request->all();
+
+            $data = $validated;
             $data['availability_status'] ??= 0;
             $data['is_active'] ??= 0;
 
@@ -53,9 +67,9 @@ class BookingController extends Controller
             DB::commit();
 
             return redirect()->route('admin.bookings.index')->with('success', 'Thêm thành công ');
-        } catch (\Exception $exception) {
-            dd($exception->getMessage());
-            return back();
+        }catch (\Exception $exception) {
+            DB::rollBack();
+            return back()->with('error', $exception->getMessage());
         }
     }
 
@@ -86,11 +100,22 @@ class BookingController extends Controller
      */
     public function update(Request $request, string $id)
     {
+        $validated = $request->validate([
+                
+            'check_in_date' => ['required','date'],
+            'check_out_date' => ['required','date','after_or_equal:check_in_date'],
+            'room_id' => ['required','exists:rooms,id'],
+            'customer_id' => ['required','exists:customers,id'],
+            'total_amount' => 'integer|required',
+            
+
+        ]);
         try {
+           
             DB::beginTransaction();
             $model = Booking::query()->findOrFail($id);
 
-            $data = $request->all();
+            $data = $validated;
             $data['is_active'] ??= 0;
     
             $model->update($data);
@@ -100,10 +125,8 @@ class BookingController extends Controller
             return redirect()->route('admin.bookings.index')->with('success', 'Cập nhật thành công');
 
         }catch (\Exception $exception) {    
-            
-            dd($exception->getMessage());
-            Log::error('Cập nhật thất bại: ' . $exception->getMessage());
-            return back()->with('error', 'Cập nhật thất bại');
+            DB::rollBack();
+            return back()->with('error', $exception->getMessage());
         }
     }
 
@@ -112,6 +135,10 @@ class BookingController extends Controller
      */
     public function destroy(string $id)
     {
-        //
+        $model = Booking::query()->findOrFail($id);
+
+        $model->delete();
+
+        return back()->with('success', 'Xoá thành công');
     }
 }

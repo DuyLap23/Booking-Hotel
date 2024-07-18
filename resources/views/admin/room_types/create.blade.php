@@ -34,6 +34,9 @@
                                                                 <input type="text" class="form-control" id="inputName4"
                                                                     name="name" value="{{ old('name') }}"
                                                                     placeholder="Name">
+                                                                    @error('name')
+                                                                    <span class="text-danger">{{ $message }}</span>
+                                                                @enderror
                                                             </div>
 
                                                             <div class="col-md-6 mt-2">
@@ -41,6 +44,9 @@
                                                                 <input type="number" class="form-control" id="inputPrice"
                                                                     name="price" value="{{ old('price') }}"
                                                                     placeholder="Price">
+                                                                    @error('price')
+                                                                    <span class="text-danger">{{ $message }}</span>
+                                                                @enderror
                                                             </div>
                                                         </div>
 
@@ -48,8 +54,11 @@
                                                             <div class=" col-md-12">
                                                                 <label class="form-label"
                                                                     for="description">Description</label>
-                                                                <textarea class="form-control" id="description" cols="30" rows="3" value="{{ old('description') }}"
-                                                                    name="description"> </textarea>
+                                                                <textarea class="form-control" id="description" cols="30" rows="3" 
+                                                                    name="description"> {{ old('description') }}</textarea>
+                                                                    @error('description')
+                                                                    <span class="text-danger">{{ $message }}</span>
+                                                                @enderror
                                                             </div>
                                                         </div>
                                                       

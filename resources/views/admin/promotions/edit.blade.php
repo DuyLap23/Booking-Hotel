@@ -35,7 +35,10 @@
                                                                 <input type="text" class="form-control"
                                                                     id="inputTitle" name="title"
                                                                     value="{{ $data->title }}"
-                                                                    placeholder="title">    
+                                                                    placeholder="title">   
+                                                                    @error('title')
+                                                                    <span class="text-danger">{{ $message }}</span>
+                                                                @enderror 
                                                             </div>
                                                             <div class="col-md-6 mt-2">
                                                                 <label class="form-label" for="inputdiscount4">Discount
@@ -44,6 +47,9 @@
                                                                     id="inputdiscount4" name="discount_percentage"
                                                                     value="{{ $data->discount_percentage }}"
                                                                     placeholder="discount">
+                                                                    @error('discount_percentage')
+                                                                    <span class="text-danger">{{ $message }}</span>
+                                                                @enderror
                                                             </div>
                                                         </div>
                                                         <div class="row mb-3">
@@ -51,11 +57,17 @@
                                                                 <label class="form-label" for="inputStart">Sart Date</label>
                                                                 <input type="datetime-local" class="form-control" value="{{ $data->start_date }}"
                                                                     name="start_date" id="inputStart" >
+                                                                    @error('start_date')
+                                                                    <span class="text-danger">{{ $message }}</span>
+                                                                @enderror
                                                             </div>
                                                             <div class="col-md-6 mt-2">
                                                                 <label class="form-label" for="inputEnd">End Date</label>
                                                                 <input type="datetime-local" class="form-control" value="{{ $data->end_date }}"
                                                                     name="end_date" id="inputinputEnd">
+                                                                    @error('end_date')
+                                                                    <span class="text-danger">{{ $message }}</span>
+                                                                @enderror
                                                             </div>
                                                         </div>
 
@@ -63,9 +75,11 @@
                                                             <div class=" col-md-12">
                                                                 <label class="form-label"
                                                                     for="description">Description</label>
-                                                                <textarea class="form-control" id="description" cols="30" rows="3" value="{{ old('description') }}"
-                                                                    name="description"> {{ $data->description }}</textarea>
-
+                                                                <textarea class="form-control" id="description" cols="30" rows="3" 
+                                                                    name="description"> {{ old('description') }} {{ $data->description }}</textarea>
+                                                                    @error('description')
+                                                                    <span class="text-danger">{{ $message }}</span>
+                                                                @enderror
                                                             </div>
                                                         </div>
 

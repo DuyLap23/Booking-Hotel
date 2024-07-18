@@ -17,6 +17,10 @@ class Booking extends Model
         'total_amount',
     
     ];
+    protected $casts = [
+        'total_amount' => 'float',
+    ];
+
     public function room()
     {
         return $this->belongsTo(Room::class);
