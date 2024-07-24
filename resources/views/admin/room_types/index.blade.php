@@ -40,9 +40,12 @@
                                         <thead>
                                             <tr>
 
+                                                <th scope="col">STT</th>
                                                 <th scope="col">ID Hotel</th>
                                                 <th scope="col">Name</th>
                                                 <th scope="col">Price</th>
+                                                <th scope="col">Image</th>
+                                                <th scope="col">Features</th>
                                                 <th scope="col">Description</th>
                                                 <th scope="col">Status</th>
                                                 <th scope="col ">Action</th>
@@ -52,10 +55,13 @@
                                             <tbody>
                                                 <tr>
                                                     <th scope="row">
-                                                        {{ $value->id }}</th>
+                                                        {{ $key }}</th>
+                                                    <td>room_type_{{$value->id }}</td>
                                                     <td>{{ $value->name }}</td>
                                                     <td>{{ number_format($value->price) }}</td>
-                                                    <td>{{ $value->description }}</td>
+                                                    <td>/</td>
+                                                    <td>/</td>
+                                                    <td>{{ \Str::limit($value->description , 20) }}</td>
                                                     <td>{!! $value->is_active
                                                         ? '<span class="badge bg-success"> Yes</span>'
                                                         : '<span class="badge bg-danger"> No</span>' !!}</td>
@@ -64,14 +70,12 @@
                                                             <a href="{{ route('admin.room_types.edit', $value->id) }}">
                                                                 <i class="btn btn-warning">Edit</i>
                                                             </a>
-                                                            <form action="{{ route('admin.room_types.destroy', $value) }}"
+                                                            <form action="{{ route('admin.room_types.destroy', $value->id) }}" class="d-inline mx-2"
                                                                 method="POST" id="delete-form">
                                                                 @csrf
                                                                 @method('DELETE')
-                                                                <a href="#" class="dropdown-item remove-item-btn"
-                                                                    onclick="event.preventDefault(); if(confirm('Are you sure?')) { document.getElementById('delete-form').submit(); }">
-                                                                    <i class="btn btn-danger">Delete</i>
-                                                                </a>
+
+                                                                <button type="submit" onclick="return confirm('Are you sure?')" class="btn btn-danger">Delete</button>
                                                             </form>
                                                         </div>
                                                     </td>

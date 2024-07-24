@@ -9,5 +9,9 @@ class Amenity extends Model
 {
     use HasFactory;
 
-    protected $fillable = ['name', 'description'];
+    protected $fillable = ['name','image', 'description'];
+    public function roomTypes()
+    {
+        return $this->belongsToMany(RoomType::class, 'room_type_amenity');
+    }
 }

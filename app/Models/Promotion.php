@@ -15,5 +15,8 @@ class Promotion extends Model
         'start_date', 
         'end_date'
     ];
- 
+    public function roomTypes()
+    {
+        return $this->belongsToMany(RoomType::class, 'room_type_amenity');
+    }
 }

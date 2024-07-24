@@ -40,6 +40,7 @@
                                         <thead>
                                             <tr>
 
+                                                <th scope="col">STT</th>
                                                 <th scope="col">ID Room</th>
                                                 <th scope="col">Name</th>
                                                 <th scope="col">Image</th>
@@ -54,17 +55,20 @@
                                             <tbody>
                                                 <tr>
                                                     <td scope="row">
-                                                        {{ $value->id }}
+                                                        {{ $key}}
+                                                    </td>
+                                                    <td>
+                                                        room_{{ $value->id }}
                                                     </td>
                                                     
                                                     <td>{{ $value->name }}</td>
 
                                                     <td>
-                                                        <img src=" {{ asset('storage/' . $value->image) }}" width="100"
+                                                        <img src=" {{ asset('storage/' . $value->image) }}" width="100"class="img-fluid rounded-3"
                                                             alt="">
                                                     </td>
                                                     <td>
-                                                        {{ $value->description }}
+                                                        {{ \Str::limit($value->description , 20) }}
                                                     </td>
                                                     <td>
                                                         {{  $value->roomType->name }}
@@ -86,14 +90,12 @@
                                                             <a href="{{ route('admin.rooms.edit', $value->id) }}">
                                                                 <i class="btn btn-warning">Edit</i>
                                                             </a>
-                                                            <form action="{{ route('admin.rooms.destroy', $value) }}"
+                                                            <form action="{{ route('admin.rooms.destroy', $value->id) }}" class="d-inline mx-2"
                                                                 method="POST" id="delete-form">
                                                                 @csrf
-                                                                @method('DELETE')
-                                                                <a href="#" class="dropdown-item remove-item-btn"
-                                                                    onclick="event.preventDefault(); if(confirm('Are you sure?')) { document.getElementById('delete-form').submit(); }">
-                                                                    <i class="btn btn-danger">Delete</i>
-                                                                </a>
+                                                                @method('DELETE')  
+
+                                                                <button type="submit" onclick="return confirm('Are you sure?')" class="btn btn-danger">Delete</button>
                                                             </form>
                                                         </div>
                                                     </td>

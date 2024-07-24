@@ -40,6 +40,7 @@
                                         <thead>
                                             <tr>
 
+                                                <th scope="col">STT</th>
                                                 <th scope="col">ID promotion</th>
                                                 <th scope="col">Title</th>
                                                 <th scope="col">Discount Percentage</th>
@@ -53,7 +54,8 @@
                                             <tbody>
                                                 <tr>
                                                     <th scope="row">
-                                                        {{ $value->id }}</th>
+                                                        {{ $key }}</th>
+                                                    <td> promoiton_{{$value->id }}</td>
                                                     <td>{{ $value->title }}</td>
                                                     <td>Discount {{ $value->discount_percentage }}%</td>
                                                     <td>{{\Str::limit($value->description, 20) }}</td>
@@ -65,14 +67,12 @@
                                                             <a href="{{ route('admin.promotions.edit', $value->id) }}">
                                                                 <i class="btn btn-warning">Edit</i>
                                                             </a>
-                                                            <form action="{{ route('admin.promotions.destroy', $value) }}"
+                                                            <form action="{{ route('admin.promotions.destroy', $value->id) }}" class="d-inline mx-2"
                                                                 method="POST" id="delete-form">
                                                                 @csrf
                                                                 @method('DELETE')
-                                                                <a href="#" class="dropdown-item remove-item-btn"
-                                                                    onclick="event.preventDefault(); if(confirm('Are you sure?')) { document.getElementById('delete-form').submit(); }">
-                                                                    <i class="btn btn-danger">Delete</i>
-                                                                </a>
+
+                                                                <button type="submit" onclick="return confirm('Are you sure?')" class="btn btn-danger">Delete</button>
                                                             </form>
                                                         </div>
                                                     </td>

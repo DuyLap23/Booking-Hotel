@@ -18,7 +18,7 @@ class PromotionController extends Controller
     const PATH_UPLOAD = 'promotions';
     public function index()
     {
-        $promotions = Promotion::query()->get();
+        $promotions = Promotion::query()->latest('id')->get();
 
         return view(self::PATH_VIEW . __FUNCTION__, compact('promotions'));
     }

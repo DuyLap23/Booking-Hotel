@@ -3,7 +3,9 @@
 namespace App\Http\Controllers\Admin;
 
 use App\Http\Controllers\Controller;
+use App\Models\Amenity;
 use App\Models\Hotel;
+use App\Models\Promotion;
 use App\Models\Room;
 use App\Models\RoomType;
 use Illuminate\Http\Request;
@@ -20,7 +22,7 @@ class RoomTypeController extends Controller
     public function index()
     {
         
-        $roomTypes = RoomType::query()->get();;
+        $roomTypes = RoomType::query()->latest('id')->get();;
         return view(self::PATH_VIEW . __FUNCTION__, compact('roomTypes'));
     }
 
@@ -29,8 +31,9 @@ class RoomTypeController extends Controller
      */
     public function create()    
     {   
-        
-        return view(self::PATH_VIEW . __FUNCTION__);
+        $promotions = Promotion::all();
+        $amenities = Amenity::all();
+        return view(self::PATH_VIEW . __FUNCTION__,compact('promotions','amenities'));
     }
 
     /**

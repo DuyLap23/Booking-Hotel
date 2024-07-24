@@ -92,6 +92,19 @@
 
             </ul>
         </li>
+        <li class>
+            <a class="has-arrow" aria-expanded="false">
+                <div class="icon_menu">
+                    <img src="{{ asset('themes/admin/img/menu-icon/10.svg') }}" alt>
+                </div>
+                <span>Amenites</span>
+            </a>
+            <ul>
+                <li><a href="{{ route('admin.amenities.index') }}">Amenites</a></li>
+                <li><a href="{{ route('admin.amenities.create') }}">Add Amenity</a></li>
+
+            </ul>
+        </li>
 
     </ul>
 </nav>

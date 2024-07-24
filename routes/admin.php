@@ -1,7 +1,7 @@
 <?php
 
+use App\Http\Controllers\Admin\AmenityController;
 use App\Http\Controllers\Admin\BookingController;
-use App\Http\Controllers\Admin\HotelController;
 use App\Http\Controllers\Admin\PromotionController;
 use App\Http\Controllers\Admin\RoomController;
 use App\Http\Controllers\Admin\RoomTypeController;
@@ -17,4 +17,5 @@ Route::prefix('/admin')
         Route::resource('rooms', RoomController::class);
         Route::resource('promotions', PromotionController::class);
         Route::resource('bookings', BookingController::class);
+        Route::resource('amenities', AmenityController::class);
     });

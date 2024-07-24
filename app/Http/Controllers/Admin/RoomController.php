@@ -24,7 +24,7 @@ class RoomController extends Controller
             ->with(['roomType'])
             ->latest('id')
             ->get();
-        // dd($rooms?->toArray());
+       
 
         return view(self::PATH_VIEW . __FUNCTION__, compact('rooms'));
     }

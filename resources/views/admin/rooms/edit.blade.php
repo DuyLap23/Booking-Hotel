@@ -34,7 +34,7 @@
                                                                 <label class="form-label" for="inputName">Name</label>
                                                                 <input type="text" class="form-control" id="inputName"
                                                                     name="name" value="{{ $data->name }}"
-                                                                    placeholder="P302, F101...">
+                                                                    placeholder="">
                                                                     @error('name')
                                                                     <span class="text-danger">{{ $message }}</span>
                                                                 @enderror
@@ -54,7 +54,7 @@
                                                                         $url = Storage::url($url);
                                                                     }
                                                                 @endphp
-                                                                <img src="{{ $url }}" width="100"
+                                                                <img src="{{ $url }}" width="100"class="img-fluid rounded-3"
                                                                     class="mt-3">
                                                             </div>
                                                             <div class="row">
@@ -74,7 +74,7 @@
                                                                                    
 
                                                                                     </div>
-                                                                                    <img class="mt-3" src="{{ Storage::url($images->image) }}" alt="" width="70">
+                                                                                    <img class="mt-3" src="{{ Storage::url($images->image) }}" class="img-fluid rounded-3" alt="" width="70">
                                                                                 </div>
                                                                                 @endforeach
                                                                             </div>
@@ -88,7 +88,7 @@
                                                                 <label class="form-label"
                                                                     for="inputDescription">Description</label>
                                                                 <textarea name="description" id="inputDescription" cols="130" rows="5"
-                                                                   >{{ $data->description }}{{ old('description') }}</textarea>
+                                                                   >{{ $data->description }}</textarea>
                                                                     @error('description')
                                                                     <span class="text-danger">{{ $message }}</span>
                                                                 @enderror

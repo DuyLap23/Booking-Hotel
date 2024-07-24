@@ -12,6 +12,10 @@ class User extends Authenticatable
 {
     use HasApiTokens, HasFactory, Notifiable;
 
+    
+    const TYPE_MEMBER = "member";
+    const TYPE_ADMIN = "admin";
+
     /**
      * The attributes that are mass assignable.
      *
@@ -42,4 +46,8 @@ class User extends Authenticatable
         'email_verified_at' => 'datetime',
         'password' => 'hashed',
     ];
+    public function isAdmin()
+    {
+        return $this->type === self::TYPE_ADMIN;
+    }
 }
