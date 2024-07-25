@@ -1,39 +1,39 @@
+# Use the official PHP image with FPM
 FROM php:8.1-fpm
 
-# Cài đặt các dependencies
+# Set working directory
+WORKDIR /var/www
+
+# Install system dependencies
 RUN apt-get update && apt-get install -y \
     git \
     curl \
     libpng-dev \
+    libjpeg62-turbo-dev \
+    libfreetype6-dev \
     libonig-dev \
     libxml2-dev \
     zip \
-    unzip \
-    nginx
+    unzip
 
-# Cài đặt các extensions PHP
+# Clear cache
+RUN apt-get clean && rm -rf /var/lib/apt/lists/*
+
+# Install PHP extensions
 RUN docker-php-ext-install pdo_mysql mbstring exif pcntl bcmath gd
 
-# Cài đặt Composer
+# Install Composer
 COPY --from=composer:latest /usr/bin/composer /usr/bin/composer
 
-# Thiết lập thư mục làm việc
-WORKDIR /var/www
-
-# Sao chép các file dự án
+# Copy existing application directory contents
 COPY . /var/www
 
-# Cài đặt dependencies
-RUN composer install
+# Copy existing application directory permissions
+COPY --chown=www-data:www-data . /var/www
 
-# Cấp quyền cho thư mục storage và bootstrap/cache
-RUN chmod -R 777 storage bootstrap/cache
+# Change current user to www
+USER www-data
 
-# Sao chép cấu hình Nginx
-COPY nginx.conf /etc/nginx/nginx.conf
-
-# Expose port 80
-EXPOSE 80
-
-# Khởi động PHP-FPM và Nginx
-CMD service php-fpm start && nginx -g 'daemon off;'
+# Expose port 9000 and start php-fpm server
+EXPOSE 9000
+CMD ["php-fpm"]

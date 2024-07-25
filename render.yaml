@@ -1,6 +1,12 @@
 services:
   - type: web
-    name: laravel-app
+    name: your-laravel-app
     env: docker
-    buildCommand: docker build -t laravel-app .
-    startCommand: docker run -p 80:80 laravel-app
+    dockerfilePath: ./Dockerfile
+    buildCommand: composer install
+    startCommand: php-fpm
+    envVars:
+      - key: APP_ENV
+        value: local
+      - key: APP_DEBUG
+        value: true
