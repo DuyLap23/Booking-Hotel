@@ -36,9 +36,10 @@ COPY --chown=www-data:www-data . /var/www
 
 # Nginx config
 COPY nginx.conf /etc/nginx/nginx.conf
+COPY your-site.conf /etc/nginx/conf.d/your-site.conf
 
-# Expose port 8000
-EXPOSE 8000
+# Expose port 80
+EXPOSE 80
 
 # Start Nginx and PHP-FPM using a supervisor
 CMD ["sh", "-c", "php-fpm -D && nginx -g 'daemon off;'"]
