@@ -1,6 +1,9 @@
 # Use the official PHP image with FPM
 FROM php:8.1-fpm
 
+# Install Nginx
+RUN apt-get update && apt-get install -y nginx
+
 # Set working directory
 WORKDIR /var/www
 
@@ -31,9 +34,11 @@ COPY . /var/www
 # Copy existing application directory permissions
 COPY --chown=www-data:www-data . /var/www
 
-# Change current user to www
-USER www-data
+# Nginx config
+COPY nginx.conf /etc/nginx/nginx.conf
 
-# Expose port 80 and start php-fpm server
-EXPOSE 80
-CMD ["php-fpm", "--nodaemonize"]
+# Expose port 8000
+EXPOSE 8000
+
+# Start Nginx and PHP-FPM
+CMD service php8.1-fpm start && nginx -g 'daemon off;'
