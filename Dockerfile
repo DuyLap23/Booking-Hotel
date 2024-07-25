@@ -40,5 +40,5 @@ COPY nginx.conf /etc/nginx/nginx.conf
 # Expose port 8000
 EXPOSE 8000
 
-# Start Nginx and PHP-FPM
-CMD service php8.1-fpm start && nginx -g 'daemon off;'
+# Start Nginx and PHP-FPM using a supervisor
+CMD ["sh", "-c", "php-fpm -D && nginx -g 'daemon off;'"]

@@ -4,7 +4,7 @@ services:
     env: docker
     dockerfilePath: ./Dockerfile
     buildCommand: composer install
-    startCommand: /bin/bash -c "service php8.1-fpm start && nginx -g 'daemon off;'"
+    startCommand: /bin/bash -c "php-fpm -D && nginx -g 'daemon off;'"
     envVars:
       - key: APP_ENV
         value: local
