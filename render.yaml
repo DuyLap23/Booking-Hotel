@@ -3,4 +3,4 @@ services:
     name: laravel-app
     env: docker
     buildCommand: docker build -t laravel-app .
-    startCommand: docker run -p 8000:8000 laravel-app
+    startCommand: docker run -p 80:80 laravel-app
