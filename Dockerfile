@@ -29,7 +29,7 @@ RUN composer install
 RUN chmod -R 777 storage
 
 # Expose port 80
-EXPOSE 80
+EXPOSE 8000
 
 # Chạy PHP-FPM
 CMD ["php-fpm"]
