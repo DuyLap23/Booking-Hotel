@@ -34,6 +34,10 @@
                                         </div>
                                     </div>
                                 </div>
+
+                                @if (session('success'))
+                                    <div class="alert alert-success">{{ session('success') }}</div>
+                                @endif
                                 <div class="QA_table mb_30">
 
                                     <table class="table lms_table_active ">
@@ -43,6 +47,7 @@
                                                 <th scope="col">STT</th>
                                                 <th scope="col">ID Amenity</th>
                                                 <th scope="col">Name</th>
+                                                <th scope="col">icon</th>
                                                 <th scope="col">Image</th>
                                                 <th scope="col">Description</th>
                                                 <th scope="col">Action</th>
@@ -55,38 +60,63 @@
                                                         {{ $key }}
                                                     </td>
                                                     <td>
-                                                        amentity_{{$value->id }}
+                                                        amentity_{{ $value->id }}
                                                     </td>
-                                                    
+
                                                     <td>{{ $value->name }}</td>
+
 
                                                     <td>
                                                         @php
-                                                        $url = $value->image;
+                                                            $icons = $value->icon;
 
-                                                        if (!\Str::contains($url, 'http')) {
-                                                            $url = Storage::url($url);
-                                                        }
-                                                    @endphp
-                                                    <img src="{{ $url }}" width="100"   height="100 " class="img-fluid rounded-3"
-                                                        class="mt-3">
+                                                            if (!\Str::contains($icons, 'http')) {
+                                                                $icons = Storage::url($icons);
+                                                            }
+                                                        @endphp
+                                                        <img src="{{ $icons }}" width="50" height="50 "
+                                                            class="img-fluid rounded-3" class="mt-3">
                                                     </td>
                                                     <td>
-                                                        {{ \Str::limit($value->description , 20) }}
+                                                        @php
+                                                            $url = $value->image;
+
+                                                            if (!\Str::contains($url, 'http')) {
+                                                                $url = Storage::url($url);
+                                                            }
+                                                        @endphp
+                                                        <img src="{{ $url }}" width="100" height="100 "
+                                                            class="img-fluid rounded-3" class="mt-3">
                                                     </td>
-                                                    
+                                                    <td>
+                                                        {{ \Str::limit($value->description, 15) }}
+                                                    </td>
+
 
                                                     <td>
                                                         <div class="d-flex align-items-center list-action">
-                                                            <a href="{{ route('admin.amenities.edit', $value->id) }}">
-                                                                <i class="btn btn-warning">Edit</i>
+                                                            <a href="{{ route('admin.amenities.edit', $value->id) }}"
+                                                                class="icon-wrapper nav-link">
+                                                                <i class="fas fa-edit"></i>
+                                                                <span class="tooltip">Edit</span>
                                                             </a>
-                                                            <form action="{{ route('admin.amenities.destroy', $value->id) }}" class="d-inline mx-2"
-                                                                method="POST" id="delete-form">
+                                                            {{-- <a class="nav-link icon-wrapper" href="{{ route('admin.amenities.show', $value->id) }}"  >
+                                                                <i class="ti-eye eye-icon" ></i>
+                                                                <span class="tooltip">View</span>
+                                                            </a> --}}
+                                                            <form
+                                                                action="{{ route('admin.amenities.destroy', $value->id) }}"
+                                                                class="d-inline" method="POST"
+                                                                id="delete-form-{{ $value->id }}">
                                                                 @csrf
                                                                 @method('DELETE')
+                                                                <span class="icon-wrapper">
+                                                                    <i class="ti-trash delete-icon"
+                                                                        data-form-id="{{ $value->id }}"
+                                                                        style="cursor: pointer;"></i>
+                                                                    <span class="tooltip">Delete</span>
+                                                                </span>
 
-                                                                <button type="submit" onclick="return confirm('Are you sure?')" class="btn btn-danger">Delete</button>
                                                             </form>
                                                         </div>
                                                     </td>
@@ -97,14 +127,14 @@
                                     </table>
                                 </div>
                             </div>
+                            <div class="d-flex justify-content-center">{{ $amenities->links() }}</div>
                         </div>
                     </div>
                 </div>
-                <div class="col-12">
-                </div>
+
             </div>
         </div>
     </div>
 
-    </div>
+   
 @endsection

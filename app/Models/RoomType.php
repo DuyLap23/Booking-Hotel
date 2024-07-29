@@ -8,12 +8,11 @@ use Illuminate\Database\Eloquent\Model;
 class RoomType extends Model
 {
     use HasFactory;
-    protected $fillable = ['name', 'description', 'price','image_thumbnail','features', 'is_active'];
+    protected $fillable = ['name', 'description', 'price', 'image_thumbnail', 'people_amount', 'bed_amount', 'is_active'];
     protected $casts = [
         'is_active' => 'boolean',
-        
     ];
-   
+
     function rooms()
     {
         return $this->hasMany(Room::class);
@@ -24,7 +23,6 @@ class RoomType extends Model
     }
     public function amenities()
     {
-        return $this->belongsToMany(Amenity::class, 'room_type_amenity');
+        return $this->belongsToMany(Amenity::class, 'room_type_amenities');
     }
-   
 }

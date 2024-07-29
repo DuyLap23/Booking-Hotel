@@ -85,63 +85,33 @@
                                 <li class="nav-item dropdown">
                                     <a class="nav-link dropdown-toggle" href="javascript:void(0)" role="button"
                                         data-bs-toggle="dropdown">
-                                        Pages
+                                      Amenity
                                         <i class="ri-arrow-down-s-line"></i>
                                     </a>
                                     <ul class="dropdown-menu">
-                                        <li>
-                                            <a class="dropdown-item"
-                                                href="{{ asset('themes/client/about.html') }}">About Us</a>
-                                        </li>
-                                        <li>
-                                            <a class="dropdown-item"
-                                                href="{{ asset('themes/client/contact.html') }}">Contact</a>
-                                        </li>
-                                        <li>
-                                            <a class="dropdown-item"
-                                                href="{{ asset('themes/client/facilities.html') }}">Facilities</a>
-                                        </li>
-                                        <li>
-                                            <a class="dropdown-item"
-                                                href="{{ asset('themes/client/faq.html') }}">Faq</a>
-                                        </li>
-                                        <li>
-                                            <a class="dropdown-item"
-                                                href="{{ asset('themes/client/prices.html') }}">Prices</a>
-                                        </li>
-                                        <li>
-                                            <a class="dropdown-item"
-                                                href="{{ asset('themes/client/services.html') }}">Services</a>
-                                        </li>
-                                        <li>
-                                            <a class="dropdown-item"
-                                                href="{{ asset('themes/client/spa.html') }}">Spa</a>
-                                        </li>
-                                        <li>
-                                            <a class="dropdown-item"
-                                                href="{{ asset('themes/client/team.html') }}">Team</a>
-                                        </li>
-                                        <li>
-                                            <a class="dropdown-item"
-                                                href="{{ asset('themes/client/checkout.html') }}">Checkout</a>
-                                        </li>
+                                       @foreach($amenities as $key => $value)
+                                       <li>
+                                        <a class="dropdown-item"
+                                            href="{{ route('amenity')}}">{{ $value->name }}</a>
+                                    </li>
+                                       @endforeach
+                                      
                                     </ul>
                                 </li>
                                 <li class="nav-item dropdown">
                                     <a class="nav-link dropdown-toggle" href="javascript:void(0)" role="button"
                                         data-bs-toggle="dropdown">
-                                        Blog
+                                       Sevice
                                         <i class="ri-arrow-down-s-line"></i>
                                     </a>
                                     <ul class="dropdown-menu">
-                                        <li>
-                                            <a class="dropdown-item"
-                                                href="{{ asset('themes/client/blog.html') }}">Blog</a>
-                                        </li>
-                                        <li>
-                                            <a class="dropdown-item"
-                                                href="{{ asset('themes/client/blog-details.html') }}">Blog Details</a>
-                                        </li>
+                                       @foreach($services as $key => $value)
+                                       <li>
+                                        <a class="dropdown-item"
+                                            href="{{ route('service')}}">{{ $value->name }}</a>
+                                    </li>
+                                       @endforeach
+                                        
                                     </ul>
                                 </li>
                                 <li class="nav-item dropdown">
@@ -166,7 +136,7 @@
                                     @endif
                                 @else
                                     <li class="nav-item dropdown">
-                                        <a id="navbarDropdown" class="nav-link dropdown-toggle text-primary mx-2"
+                                        <a id="navbarDropdown" class="nav-link  dropdown-toggle text-primary mx-2"
                                             href="#" role="button" data-bs-toggle="dropdown" aria-haspopup="true"
                                             aria-expanded="false" v-pre>
                                             {{ Auth::user()->name }}

@@ -23,8 +23,7 @@ class RoomController extends Controller
         $rooms = Room::query()
             ->with(['roomType'])
             ->latest('id')
-            ->get();
-       
+            ->cursorPaginate(5);
 
         return view(self::PATH_VIEW . __FUNCTION__, compact('rooms'));
     }
@@ -46,9 +45,12 @@ class RoomController extends Controller
         $validated = $request->validate([
             'name' => ['required', 'max:50'],
             'room_type_id' => ['required', 'exists:room_types,id'],
-            'image' => ['required', 'image', 'mimes:jpeg,png,jpg,gif,svg'],
+            'image_thumbnail' => ['required', 'image', 'mimes:jpeg,png,jpg,gif,svg'],
+            'price' => ['required', 'integer'],
+
             'description' => ['required', 'min:20'],
         ]);
+
         $dataRoomImages = $request->file('room_images') ?: [];
         try {
             DB::beginTransaction();
@@ -56,8 +58,8 @@ class RoomController extends Controller
             $data['availability_status'] = $request->boolean('availability_status', false);
             $data['is_active'] = $request->boolean('is_active', false);
 
-            if ($request->hasFile('image')) {
-                $data['image'] = Storage::put(self::PATH_UPLOAD, $request->file('image'));
+            if ($request->hasFile('image_thumbnail')) {
+                $data['image_thumbnail'] = Storage::put(self::PATH_UPLOAD, $request->file('image_thumbnail'));
             }
             $rooms = Room::query()->create($data);
             foreach ($dataRoomImages as $key => $image) {
@@ -70,10 +72,12 @@ class RoomController extends Controller
 
             DB::commit();
 
-            return redirect()->route('admin.rooms.index')->with('success', 'Thêm thành công ');
+            return redirect()
+                ->route(self::PATH_VIEW . 'index')
+                ->with('success', 'Thêm thành công ');
         } catch (\Exception $exception) {
             DB::rollBack();
-            return back()->with('error', $exception->getMessage());
+            return back()->with('error', 'Thêm thành công');
         }
     }
 
@@ -92,7 +96,6 @@ class RoomController extends Controller
     {
         $data = Room::query()->findOrFail($id);
         $room_types = DB::table('room_types')->where('is_active', 1)->get();
-     
 
         return view(self::PATH_VIEW . __FUNCTION__, compact('data', 'room_types'));
     }
@@ -105,7 +108,8 @@ class RoomController extends Controller
         $validated = $request->validate([
             'name' => ['required', 'max:50'],
             'room_type_id' => ['required', 'exists:room_types,id'],
-            'image' => ['image', 'mimes:jpeg,png,jpg,gif,svg'],
+            'image_thumbnail' => ['image', 'mimes:jpeg,png,jpg,gif,svg'],
+            'price' => ['required', 'integer'],
             'description' => ['required', 'min:20'],
         ]);
         $dataRoomImages = $request->file('room_images') ?: [];
@@ -117,12 +121,12 @@ class RoomController extends Controller
             $data['availability_status'] = $request->boolean('availability_status', false);
             $data['is_active'] = $request->boolean('is_active', false);
 
-            if ($request->hasFile('image')) {
+            if ($request->hasFile('image_thumbnail')) {
                 // Lưu ảnh mới và cập nhật đường dẫn vào $data
-                $data['image'] = Storage::put(self::PATH_UPLOAD, $request->file('image'));
+                $data['image_thumbnail'] = Storage::put(self::PATH_UPLOAD, $request->file('image_thumbnail'));
 
                 // Lưu lại đường dẫn ảnh hiện tại để xóa sau khi cập nhật thành công
-                $currentImage = $model->image;
+                $currentImage = $model->image_thumbnail;
             } else {
                 // Không có ảnh mới, giữ nguyên ảnh hiện tại
                 $currentImage = null;
@@ -130,44 +134,52 @@ class RoomController extends Controller
 
             $model->update($data);
 
-       
-            // Lấy danh sách các ảnh hiện tại của phòng từ cơ sở dữ liệu
-            $currentImages = RoomImage::where('room_id', $model->id)->get();
-            // dd($currentImages);
-            // Lấy danh sách các ảnh được gửi lên trong $dataRoomImages
-            $newImages = collect($dataRoomImages)->map(function ($image) {
-                return [
-                    'image' => $image->store('rooms'),
-                ];
-            });
-
-            // Xác định các ảnh cũ cần xóa
-            $imagesToDelete = $currentImages->reject(function ($currentImage) use ($newImages) {
-                // Kiểm tra xem ảnh hiện tại có tồn tại trong danh sách ảnh mới không
-                return $newImages->contains('image', $currentImage->image);
-            });
-
-            // Xóa các ảnh cũ không còn trong danh sách ảnh mới
-            foreach ($imagesToDelete as $imageToDelete) {
-                Storage::delete($imageToDelete->image); // Xóa ảnh trong storage
-                $imageToDelete->delete(); // Xóa ảnh khỏi cơ sở dữ liệu
-            }
-
-            // Thêm các ảnh mới vào cơ sở dữ liệu
-            foreach ($newImages as $newImage) {
-                RoomImage::create([
-                    'room_id' => $model->id,
-                    'image' => $newImage['image'],
-                ]);
-            }
-
             if ($currentImage && Storage::exists($currentImage)) {
                 Storage::delete($currentImage);
             }
 
+            // XỬ LÍ NHIỀU ẢNH
+
+            // Lấy danh sách các ảnh hiện tại của phòng từ cơ sở dữ liệu
+            $currentImages = RoomImage::where('room_id', $model->id)->get();
+
+            // Xóa các ảnh được đánh dấu xóa
+            if (isset($dataRoomImages['deleted_images'])) {
+                foreach ($dataRoomImages['deleted_images'] as $imageId) {
+                    $imageToDelete = RoomImage::find($imageId);
+                    if ($imageToDelete) {
+                        Storage::delete($imageToDelete->image); // Xóa ảnh khỏi storage
+                        $imageToDelete->delete(); // Xóa ảnh khỏi cơ sở dữ liệu
+                    }
+                }
+            }
+
+            // Xử lý các ảnh hiện tại
+            foreach ($currentImages as $currentImage) {
+                $inputName = "room_images[{$currentImage->id}]";
+                if (isset($dataRoomImages[$inputName]) && $dataRoomImages[$inputName] instanceof \Illuminate\Http\UploadedFile) {
+                    // Nếu có ảnh mới, cập nhật ảnh mới
+                    Storage::delete($currentImage->image); // Xóa ảnh cũ khỏi storage
+                    $currentImage->image = $dataRoomImages[$inputName]->store('rooms'); // Lưu ảnh mới
+                    $currentImage->save();
+                }
+            }
+
+            // Thêm các ảnh mới vào cơ sở dữ liệu
+            if (isset($dataRoomImages['new_room_images'])) {
+                foreach ($dataRoomImages['new_room_images'] as $newImage) {
+                    RoomImage::create([
+                        'room_id' => $model->id,
+                        'image' => $newImage->store('rooms'),
+                    ]);
+                }
+            }
+
             DB::commit();
 
-            return redirect()->route('admin.rooms.index')->with('success', 'Cập nhật thành công');
+            return redirect()
+                ->route(self::PATH_VIEW . 'index')
+                ->with('success', 'Cập nhật thành công');
         } catch (\Exception $exception) {
             dd($exception->getMessage());
             Log::error('Cập nhật thất bại: ' . $exception->getMessage());
@@ -181,7 +193,16 @@ class RoomController extends Controller
     public function destroy(string $id)
     {
         $model = Room::query()->findOrFail($id);
+        // Lấy tất cả các ảnh liên quan đến phòng từ bảng room_images
+        $images = RoomImage::where('room_id', $model->id)->get();
 
+        // Xóa các ảnh khỏi storage và bảng room_images
+        foreach ($images as $image) {
+            if (Storage::exists($image->image)) {
+                Storage::delete($image->image);
+            }
+            $image->delete();
+        }
         $model->delete();
 
         if ($model->image && Storage::exists($model->image)) {

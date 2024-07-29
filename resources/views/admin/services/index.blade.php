@@ -16,7 +16,7 @@
                         <div class="white_card_body">
                             <div class="QA_section">
                                 <div class="white_box_tittle list_header">
-                                    <h4>Room list</h4>
+                                    <h4>Services list</h4>
                                     <div class="box_right d-flex lms_block">
                                         <div class="serach_field_2">
                                             <div class="search_inner">
@@ -29,11 +29,15 @@
                                             </div>
                                         </div>
                                         <div class="add_button ms-2 ">
-                                            <a href="{{ route('admin.rooms.create') }}" data-bs-toggle="modal"
+                                            <a href="{{ route('admin.services.create') }}" data-bs-toggle="modal"
                                                 data-bs-target="#addcategory" class="btn_2">Add New</a>
                                         </div>
                                     </div>
                                 </div>
+
+                            @if(session('success'))
+                                <div class="alert alert-success">{{ session('success') }}</div>
+                            @endif
                                 <div class="QA_table mb_30">
 
                                     <table class="table lms_table_active ">
@@ -41,61 +45,65 @@
                                             <tr>
 
                                                 <th scope="col">STT</th>
-                                                <th scope="col">ID Room</th>
+                                                <th scope="col">ID Amenity</th>
                                                 <th scope="col">Name</th>
-                                                <th scope="col">Image Thumbnail</th>
-                                                <th scope="col">Price</th>
-                                                <th scope="col">Room Type</th>
-                                                <th scope="col">Availability</th>
-                                                <th scope="col">Status</th>
+                                                <th scope="col">icon</th>
+                                                <th scope="col">Image</th>
+                                                <th scope="col">Description</th>
                                                 <th scope="col">Action</th>
                                             </tr>
                                         </thead>
-                                        @foreach ($rooms as $key => $value)
+                                        @foreach ($services as $key => $value)
                                             <tbody>
                                                 <tr>
                                                     <td scope="row">
-                                                        {{ $key +1}}
+                                                        {{ $key }}
                                                     </td>
                                                     <td>
-                                                        room_{{ $value->id }}
+                                                        amentity_{{$value->id }}
                                                     </td>
                                                     
                                                     <td>{{ $value->name }}</td>
+                                                 
 
                                                     <td>
-                                                        <img src=" {{ asset('storage/' . $value->image_thumbnail) }}" width="100"class="img-fluid rounded-3"
-                                                            alt="">
-                                                    </td>
-                                                    <td>
-                                                        {{ number_format($value->price) }}$/đêm
-                                                    </td>
-                                                    <td>
-                                                        {{  $value->roomType->name }}
-                                                    </td>
+                                                        @php
+                                                        $icons = $value->icon;
 
-                                                    <td>{!! $value->availability_status
-                                                        ? '<span class="badge bg-primary"> On</span>'
-                                                        : '<span class="badge bg-danger"> Off</span>' !!}
+                                                        if (!\Str::contains($icons, 'http')) {
+                                                            $icons = Storage::url($icons);
+                                                        }
+                                                    @endphp
+                                                    <img src="{{ $icons }}" width="50"   height="50 " class="img-fluid rounded-3"
+                                                        class="mt-3">
+                                                    </td>
+                                                    <td>
+                                                        @php
+                                                        $url = $value->image;
+
+                                                        if (!\Str::contains($url, 'http')) {
+                                                            $url = Storage::url($url);
+                                                        }
+                                                    @endphp
+                                                    <img src="{{ $url }}" width="100"   height="100 " class="img-fluid rounded-3"
+                                                        class="mt-3">
+                                                    </td>
+                                                    <td>
+                                                        {{ \Str::limit($value->description , 15) }}
                                                     </td>
                                                     
 
-                                                    <td>{!! $value->is_active
-                                                        ? '<span class="badge bg-success"> Yes</span>'
-                                                        : '<span class="badge bg-danger"> No</span>' !!}
-                                                    </td>
-
                                                     <td>
                                                         <div class="d-flex align-items-center list-action">
-                                                            <a href="{{ route('admin.rooms.edit', $value->id) }}" class="icon-wrapper"  >
+                                                            <a href="{{ route('admin.services.edit', $value->id) }}" class="icon-wrapper nav-link">
                                                                 <i class="fas fa-edit"></i>
                                                                 <span class="tooltip">Edit</span>
                                                             </a>
-                                                            <a class="nav-link icon-wrapper" href="{{ route('admin.rooms.show', $value->id) }}"  >
+                                                            {{-- <a class="nav-link icon-wrapper" href="{{ route('admin.services.show', $value->id) }}"  >
                                                                 <i class="ti-eye eye-icon" ></i>
                                                                 <span class="tooltip">View</span>
-                                                            </a>
-                                                            <form action="{{ route('admin.rooms.destroy', $value->id) }}"
+                                                            </a> --}}
+                                                            <form action="{{ route('admin.services.destroy', $value->id) }}"
                                                                 class="d-inline"
                                                                 method="POST"
                                                                 id="delete-form-{{ $value->id }}">
@@ -116,11 +124,11 @@
                                     </table>
                                 </div>
                             </div>
-                            <div class="d-flex justify-content-center">{{ $rooms->links() }}</div>
                         </div>
                     </div>
                 </div>
-             
+                <div class="col-12">
+                </div>
             </div>
         </div>
     </div>

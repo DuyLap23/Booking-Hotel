@@ -12,4 +12,8 @@ class RoomImage extends Model
         'room_id',
         'image',
     ];
+    public function room()
+    {
+        return $this->belongsTo(Room::class);
+    }
 }

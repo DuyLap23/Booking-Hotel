@@ -1,4 +1,4 @@
-<nav class="sidebar vertical-scroll  ps-container ps-theme-default ps-active-y">
+<nav class="sidebar vertical-scroll   ps-container ps-theme-default ps-active-y">
     <div class="logo d-flex justify-content-between">
         <a href=""><img src="{{ asset('themes/admin/img/logo.png') }}" alt></a>
         <div class="sidebar_close_icon d-lg-none">
@@ -102,6 +102,33 @@
             <ul>
                 <li><a href="{{ route('admin.amenities.index') }}">Amenites</a></li>
                 <li><a href="{{ route('admin.amenities.create') }}">Add Amenity</a></li>
+
+            </ul>
+        </li>
+        <li class>
+            <a class="has-arrow" aria-expanded="false">
+                <div class="icon_menu">
+                    <img src="{{ asset('themes/admin/img/menu-icon/7.svg') }}" alt>
+                </div>
+                <span>Services</span>
+            </a>
+            <ul>
+                <li><a href="{{ route('admin.services.index') }}">Services</a></li>
+                <li><a href="{{ route('admin.services.create') }}">Add Service</a></li>
+
+            </ul>
+        </li>
+        
+        <li class>
+            <a class="has-arrow" aria-expanded="false">
+                <div class="icon_menu">
+                    <img src="{{ asset('themes/admin/img/menu-icon/8.svg') }}" alt>
+                </div>
+                <span>Banners</span>
+            </a>
+            <ul>
+                <li><a href="{{ route('admin.banners.index') }}">Banners</a></li>
+                <li><a href="{{ route('admin.banners.create') }}">Add Banner</a></li>
 
             </ul>
         </li>

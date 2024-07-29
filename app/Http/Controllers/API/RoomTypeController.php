@@ -3,8 +3,7 @@
 namespace App\Http\Controllers\API;
 
 use App\Http\Controllers\Controller;
-use App\Models\Hotel;
-use App\Models\Room;
+
 use App\Models\RoomType;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
@@ -69,7 +68,22 @@ class RoomTypeController extends Controller
      */
     public function show(string $id)
     {
-        //
+        try {
+            // Tìm phòng theo ID với quan hệ 'roomType'
+            $data = RoomType::with('amenities')->findOrFail($id);
+            return response()->json([
+                'success' => true,
+                'data' => $data,
+            ]);
+        } catch (\Exception $e) {
+            return response()->json(
+                [
+                    'success' => false,
+                    'message' => 'Room Type not found.' . $e->getMessage(),
+                ],
+                404,
+            );
+        }
     }
 
     /**

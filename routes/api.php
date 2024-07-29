@@ -2,6 +2,7 @@
 
 use App\Http\Controllers\API\PromotionController;
 use App\Http\Controllers\API\RoomController;
+use App\Http\Controllers\API\RoomTypeController;
 use App\Http\Controllers\API\UserController;
 use Illuminate\Support\Facades\Route;
 
@@ -30,4 +31,5 @@ Route::group([
     Route::get('logout', [UserController::class, 'logout']);
 });
 Route::apiResource('rooms', RoomController::class);
+Route::apiResource('room_type', RoomTypeController::class);
 Route::apiResource('promotions', PromotionController::class);

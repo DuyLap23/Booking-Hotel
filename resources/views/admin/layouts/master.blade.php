@@ -205,9 +205,9 @@
 
     <script src="{{ asset('themes/admin/vendors/owl_carousel/js/owl.carousel.min.js')}}"></script>
 
-    <script src="{{ asset('themes/admin/vendors/datatable/js/jquery.dataTables.min.js')}}"></script>
+    {{-- <script src="{{ asset('themes/admin/vendors/datatable/js/jquery.dataTables.min.js')}}"></script>
     <script src="{{ asset('themes/admin/vendors/datatable/js/dataTables.responsive.min.js')}}"></script>
-    <script src="{{ asset('themes/admin/vendors/datatable/js/dataTables.buttons.min.js')}}"></script>
+    <script src="{{ asset('themes/admin/vendors/datatable/js/dataTables.buttons.min.js')}}"></script> --}}
     <script src="{{ asset('themes/admin/vendors/datatable/js/buttons.flash.min.js')}}"></script>
     <script src="{{ asset('themes/admin/vendors/datatable/js/jszip.min.js')}}"></script>
     <script src="{{ asset('themes/admin/vendors/datatable/js/pdfmake.min.js')}}"></script>
@@ -245,6 +245,19 @@
 
     <script src="{{ asset('themes/admin/js/dashboard_init.js')}}"></script>
     <script src="{{ asset('themes/admin/js/custom.js')}}"></script>
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            const deleteIcons = document.querySelectorAll('.delete-icon');
+            deleteIcons.forEach(icon => {
+                icon.addEventListener('click', function() {
+                    const formId = this.getAttribute('data-form-id');
+                    if (confirm('Are you sure?')) {
+                        document.getElementById(`delete-form-${formId}`).submit();
+                    }
+                });
+            });
+        });
+        </script>
     @yield('script-libs')
 </body>
 

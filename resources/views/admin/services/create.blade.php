@@ -9,7 +9,7 @@
                         <div class="white_card_body">
                             <div class="QA_section">
                                 <div class="white_box_tittle list_header">
-                                    <h4>Amentity add</h4>
+                                    <h4>Service add</h4>
                                 </div>
                                 <div class="QA_table mb_30">
                                     @if (session('error'))
@@ -19,7 +19,7 @@
                                         <div class="white_card card_height_100 mb_30">
                                             <div class="white_card_body">
                                                 <div class="card-body">
-                                                    <form action="{{ route('admin.amenities.store') }}" method="POST"
+                                                    <form action="{{ route('admin.services.store') }}" method="POST"
                                                         enctype="multipart/form-data">
                                                         @csrf
                                                         <div class="row mb-3">
@@ -64,6 +64,16 @@
                                                                         id="image" name="image"
                                                                         value="{{ old('image') }}">
                                                                     @error('image')
+                                                                        <span class="text-danger">{{ $message }}</span>
+                                                                    @enderror
+                                                                </div>
+                                                                <div class="mb-3">
+                                                                    <label class="form-label" for="image">Price
+                                                                    </label>
+                                                                    <input type="number" class="form-control"
+                                                                        id="price" name="price" placeholder="Price"
+                                                                        value="{{ old('price') }}">
+                                                                    @error('price')
                                                                         <span class="text-danger">{{ $message }}</span>
                                                                     @enderror
                                                                 </div>

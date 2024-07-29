@@ -3,25 +3,22 @@
 namespace App\Http\Controllers\Admin;
 
 use App\Http\Controllers\Controller;
-use App\Models\Amenity;
+use App\Models\Service;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
-use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Facades\Storage;
-use Illuminate\Pagination\CursorPaginator;
 
-class AmenityController extends Controller
+class ServiceController extends Controller
 {
     /**
      * Display a listing of the resource.
      */
-    const PATH_VIEW = 'admin.amenities.';
-    const PATH_UPLOAD = 'amenities';
+    const PATH_VIEW = 'admin.services.';
+    const PATH_UPLOAD = 'services';
     public function index()
     {
-        $amenities = Amenity::query()->latest('id')->cursorPaginate(5);
-        // dd($amenities?->toArray());
-        return view(self::PATH_VIEW . __FUNCTION__, compact('amenities'));
+        $services = Service::all();
+        return view(self::PATH_VIEW . __FUNCTION__,  compact('services'));
     }
 
     /**
@@ -38,12 +35,13 @@ class AmenityController extends Controller
     public function store(Request $request)
     {
         $validated = $request->validate([
-            'name' => ['required', 'max:100'],
-            'icon' => ['required', 'image', 'mimes:jpeg,png,jpg,gif,svg'],
+            'name' => ['required', 'max:50'],
+            'icon' => ['required',  'mimes:jpeg,png,jpg,gif,svg'],
             'image' => ['required', 'image', 'mimes:jpeg,png,jpg,gif,svg'],
+            'price' => ['required', 'integer', 'min:1'],
             'description' => ['required', 'min:20'],
         ]);
-
+    
         try {
             $data = $validated;
 
@@ -53,12 +51,12 @@ class AmenityController extends Controller
             if ($request->hasFile('image')) {
                 $data['image'] = Storage::put(self::PATH_UPLOAD, $request->file('image'));
             }
-            Amenity::query()->create($data);
-
-            return redirect()->route(self::PATH_VIEW.'index')->with('success', 'Thêm thành công ');
+            Service::query()->create($data);
+           
+            return redirect()->route( self::PATH_VIEW.'index')->with('success', 'Thêm thành công. ');
         } catch (\Exception $exception) {
             DB::rollBack();
-            return back()->with('error', 'Thêm không thành công');
+            return back()->with('error','Thêm không thành công.');
         }
     }
 
@@ -75,26 +73,28 @@ class AmenityController extends Controller
      */
     public function edit(string $id)
     {
-        $data = Amenity::query()->findOrFail($id);
+        $data = Service::query()->findOrFail($id);
 
         return view(self::PATH_VIEW . __FUNCTION__, compact('data'));
     }
+
     /**
      * Update the specified resource in storage.
      */
     public function update(Request $request, string $id)
     {
-        // Validate các trường name và description
         $validated = $request->validate([
             'name' => ['required', 'max:50'],
-            'icon' => ['image', 'mimes:jpeg,png,jpg,gif,svg'],
-            'image' => ['image', 'mimes:jpeg,png,jpg,gif,svg'],
+        
+            'icon' => ['mimes:jpeg,png,jpg,gif,svg'],
+            'image' => [ 'image', 'mimes:jpeg,png,jpg,gif,svg'],
+            'price' => ['required', 'integer', 'min:1'],
             'description' => ['required', 'min:20'],
         ]);
     
         try {
             DB::beginTransaction();
-            $model = Amenity::query()->findOrFail($id);
+            $model = Service::query()->findOrFail($id);
     
             // Khởi tạo mảng $data với các giá trị đã validate
             $data = $validated;
@@ -102,8 +102,8 @@ class AmenityController extends Controller
             // Xử lý icon
             if ($request->hasFile('icon')) 
             { 
-                
                 $data['icon'] = Storage::put(self::PATH_UPLOAD, $request->file('icon'));
+
                 $oldIcon = $model->icon;
             } else 
             {
@@ -114,6 +114,7 @@ class AmenityController extends Controller
             if ($request->hasFile('image')) 
             {
                 $data['image'] = Storage::put(self::PATH_UPLOAD, $request->file('image'));
+
                 $oldImage = $model->image;
             } else 
             {
@@ -135,19 +136,19 @@ class AmenityController extends Controller
     
             DB::commit();
     
-            return redirect()->route('admin.amenities.index')->with('success', 'Cập nhật thành công');
+            return redirect()->route(self::PATH_VIEW.'index')->with('success', 'Cập nhật thành công');
         } catch (\Exception $exception) {
             DB::rollBack();
             return back()->with('error', 'Cập nhật thất bại: ' . $exception->getMessage());
         }
     }
-    
+
     /**
      * Remove the specified resource from storage.
      */
     public function destroy(string $id)
-    {
-        $model = Amenity::query()->findOrFail($id);
+    { 
+        $model = Service::query()->findOrFail($id);
 
         $model->delete();
 

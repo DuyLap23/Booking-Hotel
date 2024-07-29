@@ -7007,3 +7007,30 @@ input[type=number]::-webkit-outer-spin-button {
   border: 1px solid #ffffff;
 }
 /*# sourceMappingURL=style.css.map */
+.section-hero {
+  position: relative;
+  overflow: hidden;
+}
+
+.hero-slide {
+  height: 100vh;
+  background-size: cover;
+  background-position: center;
+  position: relative;
+}
+
+.particles-js {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  z-index: 1;
+}
+
+.carousel-caption {
+  position: relative;
+  z-index: 2;
+}
+
+/* Thêm các style khác cho carousel caption như trong ví dụ trước */

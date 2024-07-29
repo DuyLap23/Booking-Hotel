@@ -103,7 +103,7 @@ class RoomController extends Controller
     {
         try {
             // Tìm phòng theo ID với quan hệ 'roomType'
-            $room = Room::with('roomType')->findOrFail($id);
+            $room = Room::with('images')->findOrFail($id);
 
             return response()->json([
                 'success' => true,

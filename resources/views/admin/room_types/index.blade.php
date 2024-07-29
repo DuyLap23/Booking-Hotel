@@ -1,18 +1,11 @@
 @extends('admin.layouts.master')
 
 @section('content')
-    <div class="main_content_iner ">
+    <div class="main_content_iner">
         <div class="container-fluid p-0">
             <div class="row justify-content-center">
                 <div class="col-lg-12">
                     <div class="white_card card_height_100 mb_30">
-                        <div class="white_card_header">
-                            <div class="box_header m-0">
-                                <div class="main-title">
-
-                                </div>
-                            </div>
-                        </div>
                         <div class="white_card_body">
                             <div class="QA_section">
                                 <div class="white_box_tittle list_header">
@@ -29,71 +22,82 @@
                                             </div>
                                         </div>
                                         <div class="add_button ms-2 ">
-                                            <a href="{{ route('admin.room_types.create') }}" data-bs-toggle="modal"
-                                                data-bs-target="#addcategory" class="btn_2">Add New</a>
+                                            <a href="{{ route('admin.room_types.create') }}" class="btn_2">Add New</a>
                                         </div>
                                     </div>
                                 </div>
                                 <div class="QA_table mb_30">
-
-                                    <table class="table lms_table_active ">
+                                    @if (session('success'))
+                                        <div class="alert alert-success">{{ session('success') }}</div>
+                                    @endif
+                                    <table class="table lms_table_active">
                                         <thead>
                                             <tr>
-
                                                 <th scope="col">STT</th>
                                                 <th scope="col">ID Hotel</th>
                                                 <th scope="col">Name</th>
                                                 <th scope="col">Price</th>
                                                 <th scope="col">Image</th>
-                                                <th scope="col">Features</th>
+                                                <th scope="col">Amenities</th>
                                                 <th scope="col">Description</th>
                                                 <th scope="col">Status</th>
-                                                <th scope="col ">Action</th>
+                                                <th scope="col">Action</th>
                                             </tr>
                                         </thead>
-                                        @foreach ($roomTypes as $key => $value)
-                                            <tbody>
+                                        <tbody>
+                                            @foreach ($roomTypes as $key => $value)
                                                 <tr>
-                                                    <th scope="row">
-                                                        {{ $key }}</th>
-                                                    <td>room_type_{{$value->id }}</td>
+                                                    <th scope="row">{{ $key + 1 }}</th>
+                                                    <td>room_type_{{ $value->id }}</td>
                                                     <td>{{ $value->name }}</td>
-                                                    <td>{{ number_format($value->price) }}</td>
-                                                    <td>/</td>
-                                                    <td>/</td>
-                                                    <td>{{ \Str::limit($value->description , 20) }}</td>
-                                                    <td>{!! $value->is_active
-                                                        ? '<span class="badge bg-success"> Yes</span>'
-                                                        : '<span class="badge bg-danger"> No</span>' !!}</td>
-                                                    <td >
+                                                    <td>{{ number_format($value->price) }}$/đêm</td>
+                                                    <td>
+                                                        @php
+                                                            $url = $value->image_thumbnail;
+                                                            if (!\Str::contains($url, 'http')) {
+                                                                $url = Storage::url($url);
+                                                            }
+                                                        @endphp
+                                                        <img src="{{ $url }}" width="50" height="50" class="img-fluid rounded-3">
+                                                    </td>
+                                                    <td>
+                                                        @foreach ($value->amenities as $amenity)
+                                                            <span class="badge bg-primary">{{ $amenity->name }}</span>
+                                                        @endforeach
+                                                    </td>
+                                                    <td>{{ \Str::limit($value->description, 20) }}</td>
+                                                    <td>{!! $value->is_active ? '<span class="badge bg-success">Yes</span>' : '<span class="badge bg-danger">No</span>' !!}</td>
+                                                    <td>
                                                         <div class="d-flex align-items-center list-action">
-                                                            <a href="{{ route('admin.room_types.edit', $value->id) }}">
-                                                                <i class="btn btn-warning">Edit</i>
+                                                            <a href="{{ route('admin.room_types.edit', $value->id) }}" class="icon-wrapper">
+                                                                <i class="fas fa-edit"></i>
+                                                                <span class="tooltip">Edit</span>
                                                             </a>
-                                                            <form action="{{ route('admin.room_types.destroy', $value->id) }}" class="d-inline mx-2"
-                                                                method="POST" id="delete-form">
+                                                            <a class="nav-link icon-wrapper" href="{{ route('admin.room_types.show', $value->id) }}">
+                                                                <i class="ti-eye eye-icon"></i>
+                                                                <span class="tooltip">View</span>
+                                                            </a>
+                                                            <form action="{{ route('admin.room_types.destroy', $value->id) }}" class="d-inline" method="POST" id="delete-form-{{ $value->id }}">
                                                                 @csrf
                                                                 @method('DELETE')
-
-                                                                <button type="submit" onclick="return confirm('Are you sure?')" class="btn btn-danger">Delete</button>
+                                                                <span class="icon-wrapper">
+                                                                    <i class="ti-trash delete-icon" data-form-id="{{ $value->id }}" style="cursor: pointer;"></i>
+                                                                    <span class="tooltip">Delete</span>
+                                                                </span>
                                                             </form>
                                                         </div>
                                                     </td>
                                                 </tr>
-
-                                            </tbody>
-                                        @endforeach
+                                            @endforeach
+                                        </tbody>
                                     </table>
                                 </div>
                             </div>
+                            <div class="d-flex justify-content-center">{{ $roomTypes->links() }}</div>
                         </div>
                     </div>
                 </div>
-                <div class="col-12">
-                </div>
             </div>
         </div>
-    </div>
-
     </div>
 @endsection

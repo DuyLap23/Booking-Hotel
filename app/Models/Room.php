@@ -11,8 +11,10 @@ class Room extends Model
 {
 
     use HasApiTokens, HasFactory, Notifiable;
-    protected $fillable = ['room_type_id', 'name', 'image', 'description', 'availability_status', 'is_active'];
+    protected $fillable = ['room_type_id', 'name','image_thumbnail',  'price', 'description', 'availability_status', 'is_active'];
+   
     protected $casts = [
+        'price' => 'integer',
         'is_active' => 'boolean',
         'availability_status' => 'boolean',
         

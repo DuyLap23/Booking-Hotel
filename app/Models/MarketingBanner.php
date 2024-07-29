@@ -13,7 +13,7 @@ class MarketingBanner extends Model
         'image_url',
         'url',
         'description',
-        'start_date',
-        'end_date',
+        // 'start_date',
+        // 'end_date',
     ];
 }

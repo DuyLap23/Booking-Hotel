@@ -58,13 +58,13 @@
                             </div>
                             <div class="form-group">
                                 <div class="fxt-transformY-50 fxt-transition-delay-2">
-                                    <div class="col-md-6">
+                              
                                         <input id="password-confirm" type="password" class="form-control"
                                             name="password_confirmation" placeholder="Comfirm Password" required
                                             autocomplete="new-password">
                                     </div>
                                     <i toggle="#password" class="fa fa-fw fa-eye toggle-password field-icon"></i>
-                                </div>
+                             
                             </div>
 
                             <div class="form-group">

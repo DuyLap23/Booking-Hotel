@@ -25,7 +25,7 @@
     <link rel="stylesheet" href="{{ asset('themes/demo/style.css') }}">
 @yield('section-css')
     <!-- Scripts -->
-    @vite(['resources/sass/app.scss', 'resources/js/app.js'])
+    {{-- @vite(['resources/sass/app.scss', 'resources/js/app.js']) --}}
     
 </head>
 <body>

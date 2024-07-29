@@ -18,8 +18,8 @@ return new class extends Migration
             $table->string('image_url');
             $table->string('url');
             $table->string('description');
-            $table->dateTime('start_date');
-            $table->dateTime('end_date');
+            // $table->dateTime('start_date');
+            // $table->dateTime('end_date');
             $table->timestamps();
         });
     }
