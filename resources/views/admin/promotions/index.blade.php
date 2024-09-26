@@ -29,8 +29,8 @@
                                             </div>
                                         </div>
                                         <div class="add_button ms-2 ">
-                                            <a href="{{ route('admin.promotions.create') }}" data-bs-toggle="modal"
-                                                data-bs-target="#addcategory" class="btn_2">Add New</a>
+                                            <a href="{{ route('admin.promotions.create') }}"
+                                           class="btn_2">Add New</a>
                                         </div>
                                     </div>
                                 </div>

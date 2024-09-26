@@ -28,7 +28,7 @@ class RoomController extends Controller
         // dd($rooms?->toArray());
         return response()->json(
             [
-                'success' => true,
+                'status' => true,
                 'message' => 'Rooms retrieved successfully.',
                 'data' => $rooms,
             ],
@@ -129,9 +129,9 @@ class RoomController extends Controller
      */
     public function update(Request $request, string $id)
     {
+        DB::beginTransaction();
+        
         try {
-           
-            DB::beginTransaction();
 
             $request->validate([
                 'name' => 'required',

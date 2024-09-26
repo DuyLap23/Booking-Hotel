@@ -127,7 +127,7 @@ class RoomTypeController extends Controller
                 $oldImage = null;
             }
     
-            $model->update($data);
+            $model->update($data); 
     
             // Cập nhật tiện nghi cho RoomType
             $model->amenities()->sync($validated['amenities']);

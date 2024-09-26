@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Models\Amenity;
+use App\Models\Booking;
 use App\Models\MarketingBanner;
 use App\Models\Room;
 use App\Models\RoomType;
@@ -30,12 +31,19 @@ class HomeController extends Controller
     {
         $amenity = Amenity::limit(4)->get();
         $banners = MarketingBanner::all();
-        $amenities = Amenity::all();
-        $services = Service::all();
+
         $RoomTypes = RoomType::all();
-   
-
-        return view('client.home',compact('amenity','amenities','banners','services','RoomTypes'));
+        $booking = Booking::with('room')
+            ->where(function ($query) {
+                $query->where('check_out_date', '>', date('Y-m-d'))->orWhere('check_in_date', '<', date('Y-m-d'));
+            })
+            ->get();
+        // dd($booking);
+        return view('client.home', compact('amenity', 'banners', 'RoomTypes','booking'));
     }
-
+    public function master()
+    {
+        // $amenities = Amenity::all();
+        // return view('client.layouts.master',compact('amenities'));
+    }
 }

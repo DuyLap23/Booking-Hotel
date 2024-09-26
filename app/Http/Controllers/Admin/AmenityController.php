@@ -6,9 +6,9 @@ use App\Http\Controllers\Controller;
 use App\Models\Amenity;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
-use Illuminate\Support\Facades\Log;
+
 use Illuminate\Support\Facades\Storage;
-use Illuminate\Pagination\CursorPaginator;
+
 
 class AmenityController extends Controller
 {
@@ -19,8 +19,8 @@ class AmenityController extends Controller
     const PATH_UPLOAD = 'amenities';
     public function index()
     {
-        $amenities = Amenity::query()->latest('id')->cursorPaginate(5);
-        // dd($amenities?->toArray());
+        $amenities = Amenity::query()->latest('id')->paginate(5);
+  
         return view(self::PATH_VIEW . __FUNCTION__, compact('amenities'));
     }
 
@@ -50,14 +50,19 @@ class AmenityController extends Controller
             if ($request->hasFile('icon')) {
                 $data['icon'] = Storage::put(self::PATH_UPLOAD, $request->file('icon'));
             }
+
             if ($request->hasFile('image')) {
                 $data['image'] = Storage::put(self::PATH_UPLOAD, $request->file('image'));
             }
+
             Amenity::query()->create($data);
 
             return redirect()->route(self::PATH_VIEW.'index')->with('success', 'Thêm thành công ');
+        
         } catch (\Exception $exception) {
+            
             DB::rollBack();
+
             return back()->with('error', 'Thêm không thành công');
         }
     }
@@ -93,8 +98,8 @@ class AmenityController extends Controller
         ]);
     
         try {
-            DB::beginTransaction();
-            $model = Amenity::query()->findOrFail($id);
+                DB::beginTransaction();
+                $model = Amenity::query()->findOrFail($id);
     
             // Khởi tạo mảng $data với các giá trị đã validate
             $data = $validated;

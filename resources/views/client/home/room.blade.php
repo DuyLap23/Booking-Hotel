@@ -81,9 +81,9 @@
                         </div>
                         <div class="col-xl-6 col-lg-12 p-0">
                             <div class="room-img">
-                                <img src="{{ Storage::url($RoomTypes[0]->image_thumbnail) }}"style="height: 390px; object-fit: cover" alt="room-img"
+                                <img src="{{ Storage::url($RoomTypes[0]->image_thumbnail) }}"style="height: 360px; object-fit: cover" alt="room-img"
                                     class="room-image">
-                               
+                                    <a href="{{ route('room_types', $RoomTypes[0]->id) }}" class="link"><i class="ri-arrow-right-line"></i></a>
                             </div>
                         </div>
                     </div>
@@ -129,7 +129,7 @@
 
             function updateRoomDetail(room) {
                 const roomContent = document.querySelector('.room_content');
-                console.log(roomContent);
+                // console.log(roomContent);
 
                 const amenitiesHtml = room.amenities.map(amenity => `
             <div class="lh-cols-room">
@@ -169,8 +169,8 @@
                         </div>
                         <div class="col-xl-6 col-lg-12 p-0">
                             <div class="room-img">
-                                <img src="{{ asset('/storage') }}/${room.image_thumbnail}" style="height: 390px; object-fit: cover" alt="room-img" class="room-image">
-                                
+                                <img src="{{ asset('/storage') }}/${room.image_thumbnail}" style="height: 360px; object-fit: cover" alt="room-img" class="room-image">
+                                <a href="/room_types/${room.id}" class="link"><i class="ri-arrow-right-line"></i></a>
                             </div>
                         </div>
                     </div>

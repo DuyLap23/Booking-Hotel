@@ -82,7 +82,7 @@
                                         </li>
                                     </ul>
                                 </li>
-                                <li class="nav-item dropdown">
+                                {{-- <li class="nav-item dropdown">
                                     <a class="nav-link dropdown-toggle" href="javascript:void(0)" role="button"
                                         data-bs-toggle="dropdown">
                                       Amenity
@@ -97,7 +97,7 @@
                                        @endforeach
                                       
                                     </ul>
-                                </li>
+                                </li> 
                                 <li class="nav-item dropdown">
                                     <a class="nav-link dropdown-toggle" href="javascript:void(0)" role="button"
                                         data-bs-toggle="dropdown">
@@ -113,12 +113,12 @@
                                        @endforeach
                                         
                                     </ul>
-                                </li>
-                                <li class="nav-item dropdown">
+                                </li> --}}
+                                {{-- <li class="nav-item dropdown">
                                     <a class="nav-link" href="{{ asset('themes/client/restaurant.html') }}">
                                         Restaurant
                                     </a>
-                                </li>
+                                </li> --}}
                                 
                                 @guest
                                     @if (Route::has('login'))
@@ -149,7 +149,7 @@
                                                 {{ __('Logout') }}
                                             </a>
 
-                                            <form id="logout-form" action="{{ route('logout') }}" method="POST"
+                                            <form id="logout-form" action="{{ route('logout') }}" 
                                                 class="d-none">
                                                 @csrf
                                             </form>

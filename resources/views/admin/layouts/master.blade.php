@@ -43,7 +43,7 @@
     <link rel="stylesheet" href="{{ asset('themes/admin/css/style1.css') }}" />
     <link rel="stylesheet" href="{{ asset('themes/admin/css/colors/default.css') }}" id="colorSkinCSS')}}">
     <link href='https://unpkg.com/boxicons@2.1.4/css/boxicons.min.css' rel='stylesheet'>
-
+    <link href="https://fonts.googleapis.com/css?family=Roboto:300,400,500,700&amp;display=swap" rel="stylesheet">
     @yield('style-libs')
 </head>
 
@@ -258,6 +258,17 @@
             });
         });
         </script>
+        <script src="{{ asset('themes/demo/js/jquery.min.js') }}"></script>
+        <!-- Bootstrap js -->
+        <script src="{{ asset('themes/demo/js/bootstrap.min.js') }}"></script>
+        <!-- Imagesloaded js -->
+        <script src="{{ asset('themes/demo/js/imagesloaded.pkgd.min.js') }}"></script>
+        <!-- YouTube js -->
+        <script src="{{ asset('themes/demo/js/jquery.mb.YTPlayer.min.js') }}"></script>
+        <!-- Validator js -->
+        <script src="{{ asset('themes/demo/js/validator.min.js') }}"></script>
+        <!-- Custom Js -->
+        <script src="{{ asset('themes/demo/js/main.js') }}"></script>
     @yield('script-libs')
 </body>
 

@@ -35,8 +35,8 @@ class BookingController extends Controller
     {
         
         $rooms = Room::where(['is_active' => 1, 'availability_status' => 1])->get();
-        $customers = Customer::all();
-        return view(self::PATH_VIEW . __FUNCTION__, compact('rooms', 'customers'));
+        
+        return view(self::PATH_VIEW . __FUNCTION__, compact('rooms'));
     }
 
     /**
@@ -80,7 +80,7 @@ class BookingController extends Controller
     {
         $bookings= Booking::findOrFail($id);
         $rooms = Room::where(['is_active' => 1, 'availability_status' => 1])->get();
-        $customers = Customer::all();
+        
         return view(self::PATH_VIEW . __FUNCTION__, compact('bookings','rooms', 'customers'));
     }
 
@@ -91,7 +91,7 @@ class BookingController extends Controller
     {
         $bookings= Booking::findOrFail($id);
         $rooms = Room::where(['is_active' => 1, 'availability_status' => 1])->get();
-        $customers = Customer::all();
+  
         return view(self::PATH_VIEW . __FUNCTION__, compact('bookings','rooms', 'customers'));
     }
 

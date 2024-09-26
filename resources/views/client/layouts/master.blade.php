@@ -36,6 +36,7 @@
     <link rel="stylesheet" href="https://unpkg.com/swiper/swiper-bundle.min.css" />
     <!-- Main Style -->
     <link rel="stylesheet" href="{{ asset('themes/client/assets/css/style.css') }}">
+    <link rel="stylesheet" href="{{ asset('themes/admin/vendors/datepicker/date-picker.css') }}">
     @yield('section-css')
 </head>
 
@@ -77,87 +78,12 @@
     <!-- Main-js -->
     <script src="{{ asset('themes/client/assets/js/main.js') }}"></script>
     @yield('section-js')
-    <script>
-        document.addEventListener('DOMContentLoaded', function() {
-            const particlesConfig = {
-                particles: {
-                    number: {
-                        value: 80,
-                        density: {
-                            enable: true,
-                            value_area: 800
-                        }
-                    },
-                    color: {
-                        value: "#ffffff"
-                    },
-                    shape: {
-                        type: "circle"
-                    },
-                    opacity: {
-                        value: 0.5,
-                        random: false
-                    },
-                    size: {
-                        value: 3,
-                        random: true
-                    },
-                    line_linked: {
-                        enable: true,
-                        distance: 150,
-                        color: "#ffffff",
-                        opacity: 0.4,
-                        width: 1
-                    },
-                    move: {
-                        enable: true,
-                        speed: 6,
-                        direction: "none",
-                        random: false,
-                        straight: false,
-                        out_mode: "out",
-                        bounce: false
-                    }
-                },
-                interactivity: {
-                    detect_on: "canvas",
-                    events: {
-                        onhover: {
-                            enable: true,
-                            mode: "repulse"
-                        },
-                        onclick: {
-                            enable: true,
-                            mode: "push"
-                        }
-                    },
-                    modes: {
-                        repulse: {
-                            distance: 100,
-                            duration: 0.4
-                        },
-                        push: {
-                            particles_nb: 4
-                        }
-                    }
-                },
-                retina_detect: true
-            };
-
-            particlesJS('particles-js-1', particlesConfig);
-            particlesJS('particles-js-2', particlesConfig);
-            particlesJS('particles-js-3', particlesConfig);
-
-            // Khởi tạo lại particles khi slide thay đổi
-            $('#heroCarousel').on('slid.bs.carousel', function() {
-                const activeSlide = this.querySelector('.active');
-                const particlesId = activeSlide.querySelector('.particles-js').id;
-                particlesJS(particlesId, particlesConfig);
-            });
-        });
-        
-    </script>
+   
        <script src="https://unpkg.com/swiper/swiper-bundle.min.js"></script>
+       
+    <script src="{{asset('themes/admin/vendors/datepicker/datepicker.js')}}"></script>
+    <script src="{{asset('themes/admin/vendors/datepicker/datepicker.en.js')}}"></script>
+    <script src="{{asset('themes/admin/vendors/datepicker/datepicker.custom.js')}}"></script>
 </body>
 
 

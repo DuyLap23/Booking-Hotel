@@ -9,16 +9,25 @@ class Booking extends Model
 {
     use HasFactory;
     protected $fillable = [
-        'customer_id',
+        'user_id',
         'room_id',
+        'first_name',
+        'last_name',
+        'email',
+        'phone',
+        'address',
         'check_in_date',
         'check_out_date',
         'booking_date',
         'total_amount',
+        'code_order',
+        'note',
+        'status'
     
     ];
     protected $casts = [
         'total_amount' => 'float',
+        
     ];
 
     public function room()
@@ -26,8 +35,8 @@ class Booking extends Model
         return $this->belongsTo(Room::class);
     }
 
-    public function customer()
+    public function user()
     {
-        return $this->belongsTo(Customer::class);
+        return $this->belongsTo(User::class);
     }
 }

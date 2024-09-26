@@ -13,7 +13,7 @@ class User extends Authenticatable
     use HasApiTokens, HasFactory, Notifiable;
 
     
-    const TYPE_MEMBER = "member";
+    const TYPE_CUSTOMER = "customer";   
     const TYPE_ADMIN = "admin";
 
     /**
@@ -25,6 +25,7 @@ class User extends Authenticatable
         'name',
         'email',
         'password',
+        'type',
     ];
 
     /**
@@ -48,6 +49,6 @@ class User extends Authenticatable
     ];
     public function isAdmin()
     {
-        return $this->type === self::TYPE_ADMIN;
+       return $this->type === self::TYPE_ADMIN;
     }
 }
